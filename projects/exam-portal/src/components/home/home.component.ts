@@ -11,5 +11,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  isPasswordVisible = false;
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
 }

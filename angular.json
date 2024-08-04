@@ -24,7 +24,6 @@
             "tsConfig": "projects/exam-portal/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/exam-portal/src/favicon.ico",
               "projects/exam-portal/src/assets"
             ],
             "styles": [
