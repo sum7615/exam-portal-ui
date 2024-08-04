@@ -1,17 +1,4 @@
-body{
-    background-color: #f5f6fa;
-}
-.img-logo{
-    width:10rem;
-    margin-top: 2rem;
-    margin-left: -40rem;
-}
-.btn-reg{
-    margin-top: 2rem;
-}
-.img-reg{
-    width: 100%;
-}
+
 .login-container {
     display: flex;
     justify-content: center;
@@ -71,7 +58,12 @@ body{
     font-size: 20px;
 }
 
-
+.img-reg{
+    width: 100%;
+}
+.main-body{
+    margin-top: 5rem;
+}
 form {
     display: flex;
     flex-direction: column;
