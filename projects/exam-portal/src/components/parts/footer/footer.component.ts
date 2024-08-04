@@ -11,11 +11,13 @@ export class FooterComponent implements OnInit {
   tcLink: string;
   ppLink:string;
   helpLink:string;
+  home:string;
   constructor() {
     this.currentYear = new Date().getFullYear();
-    this.tcLink="#";
-    this.ppLink="#";
-    this.helpLink="#";
+    this.tcLink="/exam-portal/terms&conditions/";
+    this.ppLink="/exam-portal/privacy-policy/";
+    this.helpLink="/exam-portal/help/";
+    this.home="/examp-portal/";
   }
   ngOnInit(): void {
   }
