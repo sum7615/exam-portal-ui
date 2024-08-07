@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-
+import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-content-projection',
   templateUrl: './content-projection.component.html',

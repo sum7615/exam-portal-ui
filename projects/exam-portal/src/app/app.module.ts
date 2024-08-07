@@ -9,11 +9,11 @@ import { ContentProjectionComponent } from '../components/parts/content-projecti
 
 @NgModule({
   declarations: [
-    HomeComponent,HeaderComponent,FooterComponent
+    HomeComponent,HeaderComponent,FooterComponent,ContentProjectionComponent
   ],
   imports: [
     BrowserModule,
-    CommonModule 
+    CommonModule
   ],
   providers: [],
   bootstrap: [ContentProjectionComponent]
