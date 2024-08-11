@@ -1,12 +1,14 @@
-import { Component, OnInit,Input,Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CategoryCountContract } from 'projects/exam-portal/src/contracts/CategoryCount';
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
-
+export class FilterComponent implements OnInit ,OnChanges{
+ngOnChanges(changes: SimpleChanges): void {
+  
+}
  @Input() CategoryCount:CategoryCountContract={
     all:0,
     men:0,

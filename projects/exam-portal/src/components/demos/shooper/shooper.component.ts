@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FakeStoreContract } from 'projects/exam-portal/src/contracts/FakeStoreContracr';
 import { CategoryCountContract } from 'projects/exam-portal/src/contracts/CategoryCount';
+import { FakeStoreServieService } from 'projects/exam-portal/src/service/fake-store-servie.service';
+
 @Component({
   selector: 'app-shooper',
   templateUrl: './shooper.component.html',
@@ -20,18 +22,24 @@ export class ShooperComponent implements OnInit {
     women:0,
    }
    
-   constructor() { }
+   constructor(private fakeStoreService:FakeStoreServieService) { }
  
   ngOnInit(): void {
 
-    fetch('https://fakestoreapi.com/products')
-            .then(res=>res.json())
-            .then(data=>{
-              this.AllProduct=data;
-              this.AllProductCopy=data;
-              this.UpdateCount();
+    this.fakeStoreService.GetAllProducts().subscribe(data=>{
+      this.AllProduct=data;
+      this.AllProductCopy=data;
+    this.UpdateCount();
+  });
+    
 
-  })
+    // fetch('https://fakestoreapi.com/products')
+    //         .then(res=>res.json())
+    //         .then(data=>{
+    //           this.AllProduct=data;
+    //           this.AllProductCopy=data;
+    //           this.UpdateCount();
+    // })
 
   }
   CategoryChange(e:any){
