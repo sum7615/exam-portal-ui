@@ -1,6 +1,6 @@
 
 export interface LookUpDataContact{
-    PropertyName:string;
-    PropertyValue:string;
-    Page:string;
+    propertyName:string;
+    propertyValue:string;
+    page:string;
 }

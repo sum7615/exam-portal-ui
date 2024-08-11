@@ -29,6 +29,6 @@ import { FilterComponent } from '../components/demos/filter/filter.component';
     HttpClientModule
   ],
   providers: [],
-  bootstrap: [ShooperComponent]
+  bootstrap: [HomeComponent]
 })
 export class AppModule { }

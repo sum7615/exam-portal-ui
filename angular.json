@@ -77,7 +77,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "proxyConfig": "projects/exam-portal/src/proxy.conf.json"
+            "proxyConfig": "proxy.conf.json"
           }
         },
         "extract-i18n": {

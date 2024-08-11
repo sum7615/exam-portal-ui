@@ -2,21 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { OnLoad } from '../../service/OnLoad';
 import { LookUpDataContact } from '../../contracts/LookUpDataContract';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  LoadData:OnLoad = new OnLoad;
-  Data?:LookUpDataContact;
+  RegImg:string|undefined='';
+  HeaderLogo:string|undefined='';
 
-  constructor() {}
+  constructor(private onload:OnLoad) {}
    HomeLoadData():void{
-    this.Data= this.LoadData.LoadPageData('home');
+    this.onload.LoadPageData('home').subscribe(e=> {
+      this.RegImg =e.filter((f:LookUpDataContact)=>f.propertyName ==='regImg').pop()?.propertyValue;
+      this.HeaderLogo=e.filter((f:LookUpDataContact)=>f.propertyName==='headerLogo').pop()?.propertyValue;
+    } );
    }
-
-
   ngOnInit(): void {
     this.HomeLoadData();
   }

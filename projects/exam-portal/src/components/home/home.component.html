@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [HeaderLogo]="HeaderLogo"></app-header>
 <main class="main-body">
     <div class="container text-center">
         <div class="row">
@@ -34,9 +34,9 @@
             </div>
             <div class="col-sm-4">
                 <figure>
-                    <!-- src="assets/public/images/img-exam.webp" -->
-                    <img class="img-reg" src="{{Data?.PropertyValue}}"   alt="SPXAM-register-image">
+                    <img [src]="RegImg" class="img-reg" alt="SPXAM-register-image">
                 </figure>
+                
             </div>
         </div>
     </div>
