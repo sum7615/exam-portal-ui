@@ -1,0 +1,18 @@
+.footer ul li{
+    list-style: none;
+    opacity: 60%;
+    color: black;
+   
+}
+.footer ul li a,.footer ul li a:hover{
+    all: unset;
+    cursor: pointer;
+}
+.footer ul{
+    display: flex;
+    justify-content: space-evenly;
+
+}
+.footer{
+    margin-top: 2rem;
+}
