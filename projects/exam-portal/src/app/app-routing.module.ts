@@ -7,10 +7,11 @@ import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { PrivacyComponent } from "./components/privacy/privacy.component";
 import { ContactComponent } from "./components/contact/contact.component";
 import { TermsComponent } from "./components/terms/terms.component";
+import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 const routes:Routes =[
     {path:"register",component:RegisterComponent},
     {path:"login",component:LoginComponent},
-    // {path: '', redirectTo: 'home', pathMatch: 'full' },
+    {path: '', redirectTo: 'home', pathMatch: 'full' },
     {path:"home",component:HomeComponent},
     {path:'privacy',component:PrivacyComponent},
     {path:"contact",component:ContactComponent},
@@ -19,7 +20,10 @@ const routes:Routes =[
 ];
 @NgModule({
 imports:[RouterModule.forRoot(routes)],
-exports:[RouterModule]
+exports:[RouterModule],
+providers: [
+    { provide: LocationStrategy, useClass: PathLocationStrategy }
+  ]
 })
 
 export class AppRoutingModule{};

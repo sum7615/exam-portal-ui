@@ -8,13 +8,14 @@ import { OnLoad } from 'projects/exam-portal/src/app/service/OnLoad';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
-  constructor() { }
-
-  @Input() HeaderLogo:string|undefined='';
-  
+  HeaderLogo:string|undefined='';
+  constructor(private onload:OnLoad) {}
+   HomeLoadData():void{
+    this.onload.LoadPageData('root').subscribe(e=> {
+      this.HeaderLogo=e.filter((f:LookUpDataContact)=>f.propertyName==='headerLogo').pop()?.propertyValue;
+    } );
+   }
   ngOnInit(): void {
-
+    this.HomeLoadData();
   }
-
 }
