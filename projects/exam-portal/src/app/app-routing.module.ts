@@ -7,7 +7,7 @@ import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { PrivacyComponent } from "./components/privacy/privacy.component";
 import { ContactComponent } from "./components/contact/contact.component";
 import { TermsComponent } from "./components/terms/terms.component";
-import { PathLocationStrategy, LocationStrategy } from '@angular/common';
+// import { PathLocationStrategy, LocationStrategy, APP_BASE_HREF, HashLocationStrategy } from '@angular/common';
 const routes:Routes =[
     {path:"register",component:RegisterComponent},
     {path:"login",component:LoginComponent},
@@ -22,7 +22,8 @@ const routes:Routes =[
 imports:[RouterModule.forRoot(routes)],
 exports:[RouterModule],
 providers: [
-    { provide: LocationStrategy, useClass: PathLocationStrategy }
+    // { provide: LocationStrategy, useClass: PathLocationStrategy },
+    // {provide:APP_BASE_HREF,useValue:'/'}
   ]
 })
 

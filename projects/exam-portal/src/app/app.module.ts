@@ -22,17 +22,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 
-// const routes:Routes =[
-//   {path:"register",component:RegisterComponent},
-//   {path:"login",component:LoginComponent},
-//   // { path: '/', component:AppComponent },
-//   { path: '', redirectTo: '/', pathMatch: 'full' },
-//   {path:"home",component:HomeComponent},
-//   {path:'privacy',component:PrivacyComponent},
-//   {path:"contact",component:ContactComponent},
-//   {path:"terms",component:TermsComponent},
-//   {path:"**",component:NotFoundComponent},
-// ];
 @NgModule({
   declarations: [
     RegisterComponent,
