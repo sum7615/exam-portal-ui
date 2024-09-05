@@ -10,7 +10,7 @@ import { TermsComponent } from "./components/terms/terms.component";
 const routes:Routes =[
     {path:"register",component:RegisterComponent},
     {path:"login",component:LoginComponent},
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    // {path: '', redirectTo: 'home', pathMatch: 'full' },
     {path:"home",component:HomeComponent},
     {path:'privacy',component:PrivacyComponent},
     {path:"contact",component:ContactComponent},

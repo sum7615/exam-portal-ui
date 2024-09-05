@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OnLoad } from './service/OnLoad';
 import { LookUpDataContact } from './contracts/LookUpDataContract';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +11,7 @@ export class AppComponent implements OnInit{
   HeaderLogo:string|undefined='';
   constructor(private onload:OnLoad) {}
    HomeLoadData():void{
-    this.onload.LoadPageData('home').subscribe(e=> {
+    this.onload.LoadPageData('root').subscribe(e=> {
       this.HeaderLogo=e.filter((f:LookUpDataContact)=>f.propertyName==='headerLogo').pop()?.propertyValue;
     } );
    }

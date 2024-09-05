@@ -17,7 +17,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "baseHref": "/exam-portal/",
             "outputPath": "dist/exam-portal",
             "index": "projects/exam-portal/src/index.html",
             "main": "projects/exam-portal/src/main.ts",
