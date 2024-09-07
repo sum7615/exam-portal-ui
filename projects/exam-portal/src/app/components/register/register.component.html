@@ -44,7 +44,24 @@
                                 Email is <strong>required</strong>
                             </mat-error>
                             <mat-error *ngIf="userEmailCntrl.hasError('email') && !userEmailCntrl.hasError('required')">
-                                Please enter a valid email address
+                                Please enter a valid email address.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="me-3">
+                        <mat-form-field>
+                            <mat-label>User Name</mat-label>
+                            <input type="text" matInput placeholder="Ex. jhon7615" formControlName="userName"
+                                (keypress)="checkUsername()"
+                                required>
+                            <mat-error *ngIf="userNameCntrl.hasError('required')">
+                                User Name is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="userNameCntrl.hasError('pattern')">
+                                Invalid user name format.
+                            </mat-error>
+                            <mat-error *ngIf="userNameCntrl.hasError('usernameTaken')">
+                                Username is already taken.
                             </mat-error>
                         </mat-form-field>
                     </div>
