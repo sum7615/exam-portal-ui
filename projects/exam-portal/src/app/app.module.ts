@@ -30,6 +30,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ForgetComponent } from './components/forget/forget.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PrivacyComponent,
     NotFoundComponent,
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    ForgetComponent
   ],
   imports: [
     BrowserModule,

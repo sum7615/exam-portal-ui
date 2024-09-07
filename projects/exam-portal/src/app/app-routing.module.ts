@@ -9,6 +9,7 @@ import { ContactComponent } from "./components/contact/contact.component";
 import { TermsComponent } from "./components/terms/terms.component";
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { ForgetComponent } from "./components/forget/forget.component";
 const routes:Routes =[
     {path:"register",component:RegisterComponent},
     {path:"login",component:LoginComponent},
@@ -18,6 +19,7 @@ const routes:Routes =[
     {path:"contact",component:ContactComponent},
     {path:"terms",component:TermsComponent},
     {path:"dashboard",component:DashboardComponent},
+    {path:"forget",component:ForgetComponent},
     {path:"**",component:NotFoundComponent},
 ];
 @NgModule({
