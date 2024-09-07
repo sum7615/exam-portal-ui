@@ -1,0 +1,30 @@
+.home-content{
+    color: #7d7e80;
+    text-align: justify;
+    margin-bottom: 4rem;
+    font-weight: 450;
+}
+.home-heading{
+    margin-bottom: 2rem;
+    font-weight: 600;
+    color: blueviolet;
+}
+.dot {
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: .5rem; 
+}
+.home-img{
+    margin-left: 7rem;
+}
+.dot::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: .5rem;
+    height: .5rem; 
+    border-radius: 50%;
+    background-color: #7d7e80;
+}

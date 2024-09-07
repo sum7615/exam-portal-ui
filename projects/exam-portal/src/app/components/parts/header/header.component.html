@@ -1,9 +1,11 @@
 <header class="container text-center">
-    <div class="row">
-        <div class="col-sm-8"  [routerLink]="['home']">
-            <img class="img-logo" [src]="HeaderLogo" alt="SPXAM">
+    <div class="row nav">
+        <div class="col-sm-3"  >
+            <img class="img-logo" [routerLink]="['home']" [src]="HeaderLogo" alt="SPXAM">
+            <a class="btn-reg btn home-link" [routerLink]="['home']">Home</a>
         </div>
-        <div class="col-sm-4">
+      
+        <div class="col-sm-9">
             <div class="btn-reg btn btn-outline-primary" [routerLink]="['register']">
               Register
             </div>
@@ -11,6 +13,5 @@
                 Login
               </div>
         </div>
-      
     </div>
 </header>

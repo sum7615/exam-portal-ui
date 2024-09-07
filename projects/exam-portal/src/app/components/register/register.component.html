@@ -1,1 +1,119 @@
-<p>register works!</p>
+<div class="container">
+    <div class="d-flex">
+        <div>
+            <div class="h2 pb-4">
+                Register Yourself
+            </div>
+
+            <form [formGroup]="frmRegister" class="reg-frm" (ngSubmit)="onSubmit()">
+                <div class="d-flex">
+                    <div class="me-3">
+                        <mat-form-field>
+                            <mat-label>First Name</mat-label>
+                            <input type="text" matInput placeholder="Ex. John" formControlName="firstName" required>
+                            <mat-error *ngIf="firstNameCntrl.hasError('required')">
+                                First name <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="firstNameCntrl.hasError('pattern')">
+                                Please use only alphabetic characters
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="me-3">
+                        <mat-form-field>
+                            <mat-label>Middle Name</mat-label>
+                            <input type="text" matInput placeholder="Ex. Chandra" formControlName="midleName">
+                            <mat-error *ngIf="midleNameCntrl.hasError('pattern')">
+                                Please use only alphabetic characters
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="me-3">
+                        <mat-form-field>
+                            <mat-label>Last Name</mat-label>
+                            <input type="text" matInput placeholder="Ex. Doe" formControlName="lastName">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="me-3">
+                        <mat-form-field>
+                            <mat-label>Email</mat-label>
+                            <input type="email" matInput formControlName="userEmail" placeholder="Ex. john@example.com">
+                            <mat-error *ngIf="userEmailCntrl.hasError('required')">
+                                Email is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="userEmailCntrl.hasError('email') && !userEmailCntrl.hasError('required')">
+                                Please enter a valid email address
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="me-3">
+                        <mat-form-field>
+                            <mat-label>Phone</mat-label>
+                            <input type="text" matInput placeholder="Ex. +91-7345******" formControlName="phone"
+                                required>
+                            <mat-error *ngIf="phoneCntrl.hasError('required')">
+                                Phone number is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="phoneCntrl.hasError('pattern')">
+                                Invalid phone number format
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <div class="me-3">
+                        <mat-form-field>
+                            <mat-label>Password</mat-label>
+                            <input matInput required
+                                [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Password"
+                                formControlName="password">
+                               
+                            <mat-error *ngIf="passwordCntrl.hasError('required')">
+                                Password is <strong>required</strong>
+                            </mat-error>
+                            <mat-hint *ngIf="passwordCntrl.hasError('pattern')">
+                                <div>
+                                    <ul class="text-danger">
+                                        <li>At least one lowercase letter.</li>
+                                        <li>At least one uppercase letter.</li>
+                                        <li>At least one digit.</li>
+                                        <li>At least one special character.</li>
+                                        <li>Password must be at least 8 characters long.</li>
+                                    </ul>
+                                </div>
+                            </mat-hint>
+                        </mat-form-field>
+                        <button type="button" class="show-password-btn btn" (click)="togglePasswordVisibility()">
+                            <i class="bi" [ngClass]="isPasswordVisible ? 'bi-eye' : 'bi-eye-slash'"></i>
+                        </button>
+                    </div>
+                    <div class="me-3">
+                        <mat-form-field>
+                            <mat-label>Re-enter Password</mat-label>
+                            <input matInput placeholder="Re-enter password" required
+                            [type]="isRePasswordVisible ? 'text' : 'password'" placeholder="Password"
+                                formControlName="rePassword" ((change))="checkPasswordsMatch()">
+                            <mat-error *ngIf="rePasswordCntrl.hasError('required')">
+                                Please re-enter the password.
+                            </mat-error>
+                            <mat-hint class="text-danger" *ngIf="!pswrdMatch && !rePasswordCntrl.pristine">
+                                Passwords don't match.
+                            </mat-hint>
+                        </mat-form-field>
+                        <button type="button" class="show-password-btn btn" (click)="toggleRePasswordVisibility()">
+                            <i class="bi" [ngClass]="isRePasswordVisible ? 'bi-eye' : 'bi-eye-slash'"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-lg" [ngClass]="{'move-reg-btn': passwordCntrl.hasError('pattern')}"
+                    [disabled]="frmRegister.invalid || !pswrdMatch" type="submit">
+                    <span class="bi bi-heart"></span> Register
+                </button>
+            </form>
+        </div>
+        <img class="reg-img" src="../../../assets/public/images/reg-img2.png" alt="">
+    </div>
+</div>
