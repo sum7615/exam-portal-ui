@@ -76,7 +76,7 @@ export class RegisterComponent implements OnInit {
   }
 
   toggleRePasswordVisibility(): void {
-    this.isRePasswordVisible = !this.isPasswordVisible;
+    this.isRePasswordVisible = !this.isRePasswordVisible;
   }
   
   onSubmit() {
