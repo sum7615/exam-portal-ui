@@ -1,0 +1,16 @@
+<div class="container text-center">
+    <h2 class="text-success-emphasis">Reset your password</h2>
+    <form [formGroup]="forgetFrm" (submit)="onSubmit()">
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="frgtEmail" placeholder="Ex. john@example.com">
+            <mat-error *ngIf="userEmail.hasError('required')">
+                Email is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="userEmail.hasError('email') && !userEmail.hasError('required')">
+                Please enter a valid email address
+            </mat-error>
+        </mat-form-field>
+        <button type="submit" class="btn btn-outline-primary">Send Reset Link</button>
+    </form>
+</div>

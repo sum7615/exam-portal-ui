@@ -1,20 +1,28 @@
-    <div class="contact-container">
-        <h1>Contact Us</h1>
-        <p>If you have any questions or concerns, feel free to reach out using the form below:</p>
+<div class="contact-container">
+    <h1>Contact Us</h1>
+    <p>If you have any questions or concerns, feel free to reach out using the form below:</p>
 
-        <form action="submit_form.php" method="POST">
-            <label for="name">Your Name</label>
-            <input type="text" id="name" name="name" required placeholder="Enter your name">
+    <form [formGroup]="frmContact" (submit)="onSubmit()">
+        <div class="contact-top">
+                <mat-form-field>
+                    <mat-label>Your Name</mat-label>
+                    <input type="text" required placeholder="Enter Your Name" matInput [formControl]="userNameCntrl">
+        
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Your Email</mat-label>
+                    <input type="text" required placeholder="Enter Your Email" matInput [formControl]="userEmailCntrl">
+                </mat-form-field>
+        </div>
+        <mat-form-field>
+            <mat-label>Subject</mat-label>
+            <input type="text" required placeholder="Subject" matInput [formControl]="subjectCntrl">
+        </mat-form-field>
 
-            <label for="email">Your Email</label>
-            <input type="email" id="email" name="email" required placeholder="Enter your email">
-
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject" required placeholder="Enter the subject">
-
-            <label for="message">Your Message</label>
-            <textarea id="message" name="message" rows="6" required placeholder="Enter your message"></textarea>
-
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+        <mat-form-field>
+            <mat-label>Message</mat-label>
+            <textarea  type="textarea" required placeholder="Message" matInput [formControl]="messgaeCntrl"></textarea>
+        </mat-form-field>
+        <button type="submit">Submit</button>
+    </form>
+</div>
