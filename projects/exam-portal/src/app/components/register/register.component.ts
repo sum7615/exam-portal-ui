@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
 import { UserService } from '../../service/UserService';
 import { Router } from '@angular/router';
 import { map, debounceTime, switchMap, catchError, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -82,18 +82,19 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     if (this.frmRegister.valid) {
       console.log('Form Submitted:', this.frmRegister.value);
-      this.userService.Registeruser(this.frmRegister.value).subscribe(
-        (response) => {
+      this.userService.Registeruser(this.frmRegister.value).subscribe({
+        next: (response) => {
           console.log('Success:', response);
           this.router.navigate(['/login']);
         },
-        (error) => {
+        error: (error:HttpErrorResponse) => {
           console.error('Error:', error);
         }
-      );
+    });
     } else {
       console.log('Form is invalid');
     }
   }
+
 }
 

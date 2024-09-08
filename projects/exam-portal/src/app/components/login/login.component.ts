@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { LookUpDataContact } from '../../contracts/LookUpDataContract';
 import { OnLoad } from '../../service/OnLoad';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../service/UserService';
+import { LoginResponseContract } from '../../contracts/LoginResContract';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,14 +16,14 @@ export class LoginComponent implements OnInit {
   public loginFrm:FormGroup; 
   RegImg:string|undefined='';
   isPasswordVisible = false;
-  constructor(private onload:OnLoad,private fb:FormBuilder){
+  constructor(private onload:OnLoad,private fb:FormBuilder,private userService:UserService,private router: Router){
     this.loginFrm=this.fb.group({
-      userEmail:this.fb.control("",[Validators.required, Validators.email]),
-      password:this.fb.control("",[Validators.required,Validators.pattern(/^[a-zA-Z]+$/)])
+      username:this.fb.control("",[Validators.required, Validators.pattern(/^[a-zA-Z0-9_]{3,16}$/)]),
+      password:this.fb.control("",[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)])
     })
   }
   
-  get lgnUserEmail(){return this.loginFrm.get('userEmail') as FormControl}
+  get lgnUserEmail(){return this.loginFrm.get('username') as FormControl}
   get lgnVassword(){return this.loginFrm.get('password') as FormControl}
 
   LoginLoad(){
@@ -35,9 +39,17 @@ export class LoginComponent implements OnInit {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
 
-  onSubmit(){
+  onSubmit() {
     if (this.loginFrm.valid) {
-      console.log('Form Submitted:', this.loginFrm.value);
+      this.userService.LoginUser(this.loginFrm.value).subscribe({
+        next: (res: LoginResponseContract) => {
+          console.log('Success:', res);
+          this.router.navigateByUrl("/dashboard");
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Error:', error);
+        }
+      });
     } else {
       console.log('Form is invalid');
     }

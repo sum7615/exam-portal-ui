@@ -10,6 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {LayoutModule} from '@angular/cdk/layout';
+
 
 
 import { HomeComponent } from './components/home/home.component';
@@ -31,6 +34,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ForgetComponent } from './components/forget/forget.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { DashHomeComponent } from './components/dasboard-component/dash-home/dash-home.component';
+import { TestsComponent } from './components/dasboard-component/tests/tests.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +56,10 @@ import { ForgetComponent } from './components/forget/forget.component';
     NotFoundComponent,
     AppComponent,
     DashboardComponent,
-    ForgetComponent
+    ForgetComponent,
+    ProfileComponent,
+    DashHomeComponent,
+    TestsComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +74,9 @@ import { ForgetComponent } from './components/forget/forget.component';
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    LayoutModule,
+    MatSidenavModule
 
   ],
   providers: [],

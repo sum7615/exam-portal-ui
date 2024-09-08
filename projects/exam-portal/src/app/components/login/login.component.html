@@ -17,13 +17,13 @@
                     </div>
                     <form [formGroup]="loginFrm" (ngSubmit)="onSubmit()">
                         <mat-form-field>
-                            <mat-label>Email</mat-label>
-                            <input type="email" matInput formControlName="userEmail" placeholder="Ex. john@example.com">
+                            <mat-label>User Name</mat-label>
+                            <input type="text" matInput formControlName="username" placeholder="Ex. john7615">
                             <mat-error *ngIf="lgnUserEmail.hasError('required')">
                                 Email is <strong>required</strong>
                             </mat-error>
-                            <mat-error *ngIf="lgnUserEmail.hasError('email') && !lgnUserEmail.hasError('required')">
-                                Please enter a valid email address
+                            <mat-error *ngIf="lgnUserEmail.hasError('pattern') && !lgnUserEmail.hasError('required')">
+                                Please enter a valid user name.
                             </mat-error>
                         </mat-form-field>
                             <mat-form-field>

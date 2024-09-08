@@ -10,6 +10,8 @@ import { TermsComponent } from "./components/terms/terms.component";
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { ForgetComponent } from "./components/forget/forget.component";
+import { DashHomeComponent } from "./components/dasboard-component/dash-home/dash-home.component";
+import { TestsComponent } from "./components/dasboard-component/tests/tests.component";
 const routes:Routes =[
     {path:"register",component:RegisterComponent},
     {path:"login",component:LoginComponent},
@@ -18,7 +20,12 @@ const routes:Routes =[
     {path:'privacy',component:PrivacyComponent},
     {path:"contact",component:ContactComponent},
     {path:"terms",component:TermsComponent},
-    {path:"dashboard",component:DashboardComponent},
+    {path:"dashboard",component:DashboardComponent,
+      children:[
+        {path:"my",component:DashHomeComponent},
+        {path:"my/tests",component:TestsComponent}
+      ]
+    },
     {path:"forget",component:ForgetComponent},
     {path:"**",component:NotFoundComponent},
 ];
