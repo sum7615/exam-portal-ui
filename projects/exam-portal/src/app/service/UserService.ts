@@ -11,9 +11,9 @@ import { LoginResponseContract } from "../contracts/LoginResContract";
 
 export class UserService{
     constructor(private http:HttpClient){};
-    private registerApi ='/register';
-    private checkUserApi='/check-user/';
-    private loginApi='/authenticate';
+    private registerApi ='/user/register';
+    private checkUserApi='/user/check-user/';
+    private loginApi='/user/login';
 
     public Registeruser(data:RegisterPayloadContract):Observable<any>{
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });

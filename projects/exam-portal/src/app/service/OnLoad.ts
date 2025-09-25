@@ -14,7 +14,7 @@ export class OnLoad{
     constructor(private http:HttpClient){};
 
 
-    private  url='/lookup/page/';
+    private  url='public/lookup/page/';
     public LoadPageData(comp:string):Observable<LookUpDataContact[]>{
       return this.http.get<LookUpDataContact[]>(`${this.url}${comp}`);
       
