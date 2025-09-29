@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
+import { UserService } from '../../service/UserService';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,7 @@ export class DashboardComponent implements OnInit ,AfterViewInit {
   @ViewChild('snav') snav!: MatSidenav;
   private _mobileQueryListener: () => void;
 
-  constructor() {
+  constructor(private userService:UserService) {
     const changeDetectorRef = inject(ChangeDetectorRef);
     const media = inject(MediaMatcher);
 
@@ -31,6 +32,10 @@ export class DashboardComponent implements OnInit ,AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.snav.open();
+  }
+
+  logout() {
+    this.userService.logOut();  
   }
 
 }

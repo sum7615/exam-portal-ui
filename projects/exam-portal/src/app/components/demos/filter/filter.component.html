@@ -1,7 +1,0 @@
-<h4>Category</h4>
-<ul class="list-unstyled">
-    <li *ngFor="let cat of AllCategory">
-        <input type="radio" name="category" value="{{cat.toLocaleLowerCase()}}" (change)="FilterProduct(cat)">{{cat}}
-        <span class="bg-primary p-1 rounded">{{getCategoryCount(cat)}}</span>       
-    </li>
-</ul>

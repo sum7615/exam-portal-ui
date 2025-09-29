@@ -1,15 +1,15 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { HomeComponent } from "./components/home/home.component";
-import { RegisterComponent } from "./components/register/register.component";
-import { LoginComponent } from "./components/login/login.component";
+import { RegisterComponent } from "./auth/register/register.component";
+import { LoginComponent } from "./auth/login/login.component";
 import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { PrivacyComponent } from "./components/privacy/privacy.component";
 import { ContactComponent } from "./components/contact/contact.component";
 import { TermsComponent } from "./components/terms/terms.component";
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { ForgetComponent } from "./components/forget/forget.component";
+import { ForgetComponent } from "./auth/forget/forget.component";
 import { DashHomeComponent } from "./components/dasboard-component/dash-home/dash-home.component";
 import { TestsComponent } from "./components/dasboard-component/tests/tests.component";
 const routes:Routes =[

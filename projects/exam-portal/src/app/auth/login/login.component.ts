@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   }
   
   get lgnUserEmail(){return this.loginFrm.get('username') as FormControl}
-  get lgnVassword(){return this.loginFrm.get('password') as FormControl}
+  get lgnPassword(){return this.loginFrm.get('password') as FormControl}
 
   LoginLoad(){
     this.onload.LoadPageData('login').subscribe(e=> {

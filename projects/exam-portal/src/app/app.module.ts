@@ -18,22 +18,17 @@ import {LayoutModule} from '@angular/cdk/layout';
 import { HomeComponent } from './components/home/home.component';
 import {HeaderComponent} from './components/parts/header/header.component'
 import {FooterComponent} from './components/parts/footer/footer.component'
-import { ContentProjectionComponent } from './components/parts/content-projection/content-projection.component';
-import { SwitchComponent } from './components/parts/switch/switch.component';
-import { ForComponent } from './components/parts/for/for.component';
-import { ShooperComponent } from './components/demos/shooper/shooper.component';
-import { FilterComponent } from './components/demos/filter/filter.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './auth/login/login.component';
 import { AppComponent } from './app.component';
 import { TermsComponent } from './components/terms/terms.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { PrivacyComponent } from './components/privacy/privacy.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { RegisterComponent } from './components/register/register.component';
+import { RegisterComponent } from './auth/register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ForgetComponent } from './components/forget/forget.component';
+import { ForgetComponent } from './auth/forget/forget.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashHomeComponent } from './components/dasboard-component/dash-home/dash-home.component';
 import { TestsComponent } from './components/dasboard-component/tests/tests.component';
@@ -44,11 +39,6 @@ import { TestsComponent } from './components/dasboard-component/tests/tests.comp
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    ContentProjectionComponent,
-    SwitchComponent,
-    ForComponent,
-    ShooperComponent,
-    FilterComponent,
     LoginComponent,
     TermsComponent,
     ContactComponent,
