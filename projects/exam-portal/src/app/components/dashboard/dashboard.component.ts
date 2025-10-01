@@ -1,7 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
-import { UserService } from '../../service/UserService';
+import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +17,7 @@ export class DashboardComponent implements OnInit ,AfterViewInit {
   @ViewChild('snav') snav!: MatSidenav;
   private _mobileQueryListener: () => void;
 
-  constructor(private userService:UserService) {
+  constructor(private auth:AuthService,private router:Router) {
     const changeDetectorRef = inject(ChangeDetectorRef);
     const media = inject(MediaMatcher);
 
@@ -25,7 +26,9 @@ export class DashboardComponent implements OnInit ,AfterViewInit {
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
   ngOnInit(): void {
-
+    if(!this.auth.getAccessToken()){
+      this.router.navigate(['/login']);
+    }
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -35,10 +38,10 @@ export class DashboardComponent implements OnInit ,AfterViewInit {
   }
 
   logout() {
-    this.userService.logOut();  
+    this.auth.logout();  
   }
 
   loadProfile() {
-    this.userService.loadProfile();
+    this.router.navigate(['dashboard/my/profile']);
   }
 }

@@ -12,6 +12,7 @@ import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { ForgetComponent } from "./auth/forget/forget.component";
 import { DashHomeComponent } from "./components/dasboard-component/dash-home/dash-home.component";
 import { TestsComponent } from "./components/dasboard-component/tests/tests.component";
+import { ProfileComponent } from "./components/profile/profile.component";
 const routes:Routes =[
     {path:"register",component:RegisterComponent},
     {path:"login",component:LoginComponent},
@@ -23,7 +24,8 @@ const routes:Routes =[
     {path:"dashboard",component:DashboardComponent,
       children:[
         {path:"my",component:DashHomeComponent},
-        {path:"my/tests",component:TestsComponent}
+        {path:"my/tests",component:TestsComponent},
+        {path:"my/profile",component:ProfileComponent}
       ]
     },
     {path:"forget",component:ForgetComponent},

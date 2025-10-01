@@ -1,1 +1,95 @@
-<p>profile works!</p>
+<div class="prflContainer">
+    <div class="prflheader">
+        <div class="user-info">
+            <h2>User Name: {{ userName }}</h2>
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input formControlName="firstName" />
+                </div>
+                <div class="form-group">
+                    <label>Middle Name</label>
+                    <input formControlName="midlename" />
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input formControlName="lastname" />
+                </div>
+                <div class="form-group">
+                    <label>DOB</label>
+                    <input type="date" formControlName="dob" />
+                </div>
+
+                <!-- Emails -->
+                <div formArrayName="emails" class="form-array">
+                    <label>Emails</label>
+                    <div *ngFor="let email of emails.controls; let i = index">
+                        <input [formControlName]="i" />
+                    </div>
+                </div>
+
+                <!-- Phone Numbers -->
+                <div formArrayName="phoneNumbers" class="form-array">
+                    <label>Phone Numbers</label>
+                    <div *ngFor="let phone of phoneNumbers.controls; let i = index">
+                        <input [formControlName]="i" />
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="prflImgContainer">
+            <img class="prflImg" src="../../../assets/public/images/uploaded_file/boy.svg" alt="Profile Image" />
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab" [class.active]="activeTab === 'access'" (click)="activeTab = 'access'">
+            Access
+        </div>
+        <div class="tab" [class.active]="activeTab === 'address'" (click)="activeTab = 'address'">
+            Address
+        </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+        <!-- Name Access Tab -->
+        <div *ngIf="activeTab === 'access'">
+            <h3>Role</h3>
+            <div>
+                <ul>
+                    <li *ngFor="let role of profileData.roles">{{ role }}</li>
+                </ul>
+            </div>
+            <h3>Permision</h3>
+            <div>
+                <ul>
+                    <li *ngFor="let permision of profileData.actions">{{ permision }}</li>
+                </ul>
+            </div>
+        </div>
+        <form [formGroup]="profileForm">
+            <div formArrayName="addreses">
+                <!-- Address Tab -->
+                <div *ngIf="addreses.length > 0 && activeTab === 'address'">
+                    <div *ngFor="let addressCtrl of addreses.controls; let i = index" [formGroupName]="i"
+                        class="address-group">
+                        <h4>{{ addressCtrl.value.addressTypeName }}</h4>
+                        <input formControlName="mainStreet" placeholder="Main Street" />
+                        <input formControlName="street1" placeholder="Street 1" />
+                        <input formControlName="street2" placeholder="Street 2" />
+                        <input formControlName="street3" placeholder="Street 3" />
+                        <input formControlName="street4" placeholder="Street 4" />
+                        <input formControlName="countryEng" placeholder="Country" />
+                        <input formControlName="stateEng" placeholder="State" />
+                        <input formControlName="cityEng" placeholder="City" />
+                        <input formControlName="pincode" placeholder="Pincode" />
+                        <input formControlName="landmark" placeholder="Landmark" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

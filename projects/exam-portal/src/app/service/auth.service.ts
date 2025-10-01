@@ -7,11 +7,11 @@ import {BehaviorSubject} from "rxjs";
 import { LoginResponseContract } from '../contracts/LoginResContract';
 import { RefreshTokenResContract } from '../contracts/RefreshTokenResContract';
 import { LoginPayloadContract } from '../contracts/LoginReqContract';
+import { Constant } from '../util/constant';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8082/api'; // Spring Boot API URL
   private accessTokenKey = 'access_token';
   private refreshTokenKey = 'refresh_token';
   private usernameKey = 'username';
@@ -23,7 +23,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router:Router) {}
 // ---- LOGIN ----
 login(data:LoginPayloadContract):Observable<LoginResponseContract> {
-  return this.http.post<LoginResponseContract>('/user/login', data).pipe(
+  return this.http.post<LoginResponseContract>(Constant.LOGIN_API, data).pipe(
     tap((res) => {
       this.storeTokens(res.accessToken, res.refreshToken);
       localStorage.setItem(this.usernameKey, data.username);
@@ -37,7 +37,7 @@ logout() {
   const userName = localStorage.getItem(this.usernameKey);
   if (this.authState.value === false || userName === null || userName === undefined) return;  this.clearTokens();
   this.authState.next(false);
-  this.http.get('/user/logout/'+userName).subscribe();
+  this.http.get(Constant.LOGOUT_API+userName).subscribe();
   this.router.navigate(['/login']);
 }
 
@@ -45,7 +45,7 @@ logout() {
 refreshAccessToken(): Observable<string> {
   const refreshToken = this.getRefreshToken();
   return this.http
-    .post<RefreshTokenResContract>('/user/refresh-token', { refreshToken })
+    .post<RefreshTokenResContract>(Constant.REFRESH_TOKEN_API, { refreshToken })
     .pipe(
       tap((res) => this.storeTokens(res.accessToken, res.refreshToken)),
       map((res) => res.accessToken)
