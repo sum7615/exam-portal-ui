@@ -57,6 +57,9 @@ refreshAccessToken(): Observable<string> {
 getAccessToken() {
   return localStorage.getItem(this.accessTokenKey);
 }
+getUsername() {
+  return localStorage.getItem(this.usernameKey);
+}
 
 getRefreshToken() {
   return localStorage.getItem(this.refreshTokenKey);

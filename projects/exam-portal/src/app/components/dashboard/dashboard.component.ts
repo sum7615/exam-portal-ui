@@ -38,4 +38,7 @@ export class DashboardComponent implements OnInit ,AfterViewInit {
     this.userService.logOut();  
   }
 
+  loadProfile() {
+    this.userService.loadProfile();
+  }
 }

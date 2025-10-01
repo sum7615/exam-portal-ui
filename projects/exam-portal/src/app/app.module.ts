@@ -13,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {LayoutModule} from '@angular/cdk/layout';
 
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from '../app/interceptors/auth.interceptor';
 
 import { HomeComponent } from './components/home/home.component';
 import {HeaderComponent} from './components/parts/header/header.component'
@@ -69,7 +70,7 @@ import { TestsComponent } from './components/dasboard-component/tests/tests.comp
     MatSidenavModule
 
   ],
-  providers: [],
+  providers: [  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

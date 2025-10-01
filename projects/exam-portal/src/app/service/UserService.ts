@@ -31,6 +31,8 @@ export class UserService{
     public logOut():void{
         this.auth.logout();
     }
-
+    loadProfile():any{
+        
+    }
 
 }
