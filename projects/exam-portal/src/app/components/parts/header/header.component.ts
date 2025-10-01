@@ -3,9 +3,10 @@ import { LookUpDataContact } from 'projects/exam-portal/src/app/contracts/LookUp
 import { OnLoad } from 'projects/exam-portal/src/app/service/OnLoad';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class HeaderComponent implements OnInit {
   HeaderLogo:string|undefined='';

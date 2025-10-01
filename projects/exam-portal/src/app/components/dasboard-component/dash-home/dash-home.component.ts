@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-dash-home',
-  templateUrl: './dash-home.component.html',
-  styleUrls: ['./dash-home.component.scss']
+    selector: 'app-dash-home',
+    templateUrl: './dash-home.component.html',
+    styleUrls: ['./dash-home.component.scss'],
+    standalone: false
 })
 export class DashHomeComponent implements OnInit {
 
