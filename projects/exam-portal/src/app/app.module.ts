@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatError } from '@angular/material/form-field';
@@ -34,43 +34,35 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { DashHomeComponent } from './components/dasboard-component/dash-home/dash-home.component';
 import { TestsComponent } from './components/dasboard-component/tests/tests.component';
 
-@NgModule({
-  declarations: [
-    RegisterComponent,
-    HomeComponent,
-    HeaderComponent,
-    FooterComponent,
-    LoginComponent,
-    TermsComponent,
-    ContactComponent,
-    PrivacyComponent,
-    NotFoundComponent,
-    AppComponent,
-    DashboardComponent,
-    ForgetComponent,
-    ProfileComponent,
-    DashHomeComponent,
-    TestsComponent
-  ],
-  imports: [
-    BrowserModule,
-    CommonModule,
-    HttpClientModule,
-    AppRoutingModule,
-    RouterModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule,
-    LayoutModule,
-    MatSidenavModule
-
-  ],
-  providers: [  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        RegisterComponent,
+        HomeComponent,
+        HeaderComponent,
+        FooterComponent,
+        LoginComponent,
+        TermsComponent,
+        ContactComponent,
+        PrivacyComponent,
+        NotFoundComponent,
+        AppComponent,
+        DashboardComponent,
+        ForgetComponent,
+        ProfileComponent,
+        DashHomeComponent,
+        TestsComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        CommonModule,
+        AppRoutingModule,
+        RouterModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatIconModule,
+        LayoutModule,
+        MatSidenavModule], providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
