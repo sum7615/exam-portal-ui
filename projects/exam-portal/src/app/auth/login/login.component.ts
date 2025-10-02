@@ -44,7 +44,6 @@ export class LoginComponent implements OnInit {
     if (this.loginFrm.valid) {
       this.userService.LoginUser(this.loginFrm.value).subscribe({
         next: (res: LoginResponseContract) => {
-          console.log('Success:', res);
           this.router.navigateByUrl("/dashboard");
         },
         error: (error: HttpErrorResponse) => {
