@@ -214,11 +214,9 @@ export class ProfileComponent implements OnInit {
 
     if (phonesPayload.length > 0) payload.telephones = phonesPayload;
 
-    console.log('Submitting payload:', payload);
 
     this.user.updateProfile(payload).subscribe({
       next: res => {
-        console.log('Profile updated successfully', res);
         this.isEditing = false;
         this.profileForm.disable();
         this.profileForm.markAsPristine();
