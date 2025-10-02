@@ -28,4 +28,9 @@ export class UserService{
         return this.http.get<string>(`${Constant.CHECK_USER_API}${userName}`);
     }
 
+    public updateProfile(data:any):Observable<any>{
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        return this.http.put<any>(`${Constant.UPDATE_PROFILE_API}`,data,{headers});
+    }
+
 }

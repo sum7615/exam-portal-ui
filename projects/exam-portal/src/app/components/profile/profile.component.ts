@@ -7,16 +7,19 @@ import { LoadProfileContract } from '../../contracts/LoadProfileContract';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss'],
-    standalone: false
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
+  standalone: false
 })
 export class ProfileComponent implements OnInit {
   userName: string | null = null;
   profileData: any;
-  activeTab: string = 'access';
   profileForm: FormGroup;
+  isEditing = false;
+  roles: string[] = [];
+  actions: string[] = [];
+  activeTab :string = 'address';
 
   constructor(
     private user: UserService,
@@ -32,7 +35,7 @@ export class ProfileComponent implements OnInit {
       dob: ['', Validators.required],
       emails: this.fb.array([]),
       phoneNumbers: this.fb.array([]),
-      addreses: this.fb.array([])    
+      addreses: this.fb.array([])
     });
   }
 
@@ -45,15 +48,54 @@ export class ProfileComponent implements OnInit {
 
     this.profileService.loadProfile().subscribe({
       next: (data: LoadProfileContract) => {
-        this.profileData = data;
+        this.profileData = this.normalizeProfileData(data);
         this.populateForm(this.profileData);
+        this.roles = data.roles || [];
+        this.profileForm.disable();
       },
-      error: (err) => {
-        console.error('Error loading profile:', err);
-      }
+      error: (err) => console.error('Error loading profile:', err)
     });
   }
 
+  private normalizeProfileData(data: any) {
+    return {
+      ...data,
+      dob: data.dob ? data.dob.split('T')[0] : '',
+      emails: data.emails || [],
+      phoneNumbers: data.phoneNumbers || [],
+      addreses: data.addreses || []
+    };
+  }
+
+  get isAdmin(): boolean {
+    return this.roles.includes('Admin');
+  }
+
+  enableEdit() {
+    this.isEditing = true;
+    this.profileForm.enable();
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+
+    // Reset top-level fields
+    this.profileForm.patchValue({
+      firstName: this.profileData.firstName,
+      midlename: this.profileData.midlename,
+      lastname: this.profileData.lastname,
+      dob: this.profileData.dob
+    });
+
+    // Reset FormArrays
+    this.populateEmails(this.profileData.emails);
+    this.populatePhones(this.profileData.phoneNumbers);
+    this.populateAddresses(this.profileData.addreses);
+
+    this.profileForm.disable();
+  }
+
+  // -------------------- FORMARRAY GETTERS --------------------
   get emails(): FormArray {
     return this.profileForm.get('emails') as FormArray;
   }
@@ -65,29 +107,38 @@ export class ProfileComponent implements OnInit {
   get addreses(): FormArray {
     return this.profileForm.get('addreses') as FormArray;
   }
-  
+
+  // -------------------- POPULATE FORM --------------------
   private populateForm(data: any) {
     this.profileForm.patchValue({
       firstName: data.firstName,
       midlename: data.midlename,
       lastname: data.lastname,
-      dob: data.dob ? data.dob.split('T')[0] : '' 
+      dob: data.dob
     });
-  
-    // Clear FormArrays first
+
+    this.populateEmails(data.emails);
+    this.populatePhones(data.phoneNumbers);
+    this.populateAddresses(data.addreses);
+  }
+
+  private populateEmails(emails: any[]) {
     this.emails.clear();
-    data.emails.forEach((email: string) => {
-      this.emails.push(this.fb.control(email, [Validators.required, Validators.email]));
+    emails.forEach(email => {
+      this.emails.push(this.fb.control(email.address, [Validators.required, Validators.email]));
     });
-  
+  }
+
+  private populatePhones(phones: any[]) {
     this.phoneNumbers.clear();
-    data.phoneNumbers.forEach((phone: string) => {
-      this.phoneNumbers.push(this.fb.control(phone, Validators.required));
+    phones.forEach(phone => {
+      this.phoneNumbers.push(this.fb.control(phone.number, Validators.required));
     });
-  
-    // Populate addresses
+  }
+
+  private populateAddresses(addresses: any[]) {
     this.addreses.clear();
-    data.addreses.forEach((addr: any) => {
+    addresses.forEach(addr => {
       this.addreses.push(
         this.fb.group({
           addressTypeName: [addr.addressTypeName || ''],
@@ -105,14 +156,92 @@ export class ProfileComponent implements OnInit {
       );
     });
   }
-  
 
-  onSubmit() {
-    if (this.profileForm.valid) {
-      console.log('Updated Profile:', this.profileForm.value);
-      // Call your service to save the updated profile if needed
-    } else {
-      console.warn('Form is invalid');
-    }
+  // -------------------- SUBMIT PROFILE --------------------
+  submitProfile() {
+    const payload: any = { userName: this.userName };
+
+    // Top-level fields
+    ['firstName', 'midlename', 'lastname', 'dob'].forEach(field => {
+      const control = this.profileForm.get(field);
+      if (control?.dirty) payload[field] = control.value;
+    });
+
+    // Emails
+    const emailsPayload: any[] = [];
+    const currentEmails = this.emails.controls.map(ctrl => ctrl.value.trim());
+
+    // Deleted or updated emails
+    this.profileData.emails.forEach((email: { id?: number; address: string }) => {
+      if (!currentEmails.includes(email.address)) {
+        emailsPayload.push({ action: 'DELETE', id: email.id, address: email.address });
+      } else {
+        const index = currentEmails.indexOf(email.address);
+        const ctrl = this.emails.at(index);
+        if (ctrl && ctrl.dirty && ctrl.value.trim() !== email.address) {
+          emailsPayload.push({ action: 'UPDATE', id: email.id, address: ctrl.value.trim() });
+        }
+      }
+    });
+
+    // New emails
+    currentEmails.forEach((emailValue: { id?: number; address: string }) => {
+      const exists = this.profileData.emails.some((p: { id?: number; address: string }) => p.address === emailValue.address);
+      if (!exists && emailValue.address) phonesPayload.push({ action: 'ADD', address: emailValue.address });
+    });
+
+    if (emailsPayload.length > 0) payload.emails = emailsPayload;
+
+    // Phones
+    const phonesPayload: any[] = [];
+    const currentPhones = this.phoneNumbers.controls.map(ctrl => ctrl.value.trim());
+    this.profileData.phoneNumbers.forEach((phone: { id?: number; number: string }) => {
+      if (!currentPhones.includes(phone.number)) {
+        phonesPayload.push({ action: 'DELETE', id: phone.id, number: phone.number });
+      } else {
+        const index = currentPhones.indexOf(phone.number);
+        const ctrl = this.phoneNumbers.at(index);
+        if (ctrl && ctrl.dirty && ctrl.value.trim() !== phone.number) {
+          phonesPayload.push({ action: 'UPDATE', id: phone.id, number: ctrl.value.trim() });
+        }
+      }
+    });
+
+    currentPhones.forEach((phone: { id?: number; number: string }) => {
+      const exists = this.profileData.phoneNumbers.some((p: { id?: number; number: string }) => p.number === phone.number);
+      if (!exists && phone.number) phonesPayload.push({ action: 'ADD', number: phone.number });
+    });
+
+    if (phonesPayload.length > 0) payload.telephones = phonesPayload;
+
+    console.log('Submitting payload:', payload);
+
+    this.user.updateProfile(payload).subscribe({
+      next: res => {
+        console.log('Profile updated successfully', res);
+        this.isEditing = false;
+        this.profileForm.disable();
+        this.profileForm.markAsPristine();
+      },
+      error: err => console.error('Error updating profile', err)
+    });
+  }
+
+  // -------------------- EMAIL METHODS --------------------
+  addEmail() {
+    this.emails.push(this.fb.control('', [Validators.required, Validators.email]));
+  }
+
+  removeEmail(index: number) {
+    this.emails.removeAt(index);
+  }
+
+  // -------------------- PHONE METHODS --------------------
+  addPhone() {
+    this.phoneNumbers.push(this.fb.control('', Validators.required));
+  }
+
+  removePhone(index: number) {
+    this.phoneNumbers.removeAt(index);
   }
 }

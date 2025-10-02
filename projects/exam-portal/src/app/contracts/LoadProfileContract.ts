@@ -2,12 +2,21 @@
 export interface LoadProfileContract{
     roles: string[];
     actions: string[];
-    emails: string[];
+    emails: Email[];
     firstName: string;
     lastname: string;
     midlename: string;
-    phoneNumbers: string[];
+    phoneNumbers: PhoneNumber[];
     addreses: Address[];
+}
+interface Email{
+    id: number;
+    address: string;
+}
+
+interface PhoneNumber{
+    id: number;
+    number: string;
 }
 
 interface Address {
