@@ -25,6 +25,10 @@
                         <label class="block text-gray-700 font-medium mb-1">First Name</label>
                         <input formControlName="firstName"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                        <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.dirty"
+                            class="text-red-500 text-sm">
+                            First name is required
+                        </div>
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-1">Middle Name</label>
@@ -35,6 +39,10 @@
                         <label class="block text-gray-700 font-medium mb-1">Last Name</label>
                         <input formControlName="lastname"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                        <div *ngIf="profileForm.get('lastname')?.invalid && profileForm.get('firstName')?.dirty"
+                            class="text-red-500 text-sm">
+                            First name is required
+                        </div>
                     </div>
                 </div>
 
@@ -43,10 +51,13 @@
                     <label class="block text-gray-700 font-medium mb-1">DOB</label>
                     <input type="date" formControlName="dob"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                    <div *ngIf="profileForm.get('dob')?.invalid && profileForm.get('firstName')?.dirty"
+                        class="text-red-500 text-sm">
+                        DOB is required
+                    </div>
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-4">
-                    <!-- Emails -->
                     <!-- Emails -->
                     <div formArrayName="emails" class="space-y-2">
                         <label class="block font-medium mb-1">Emails</label>
@@ -57,6 +68,11 @@
                         </div>
                         <button *ngIf="isEditing" type="button" (click)="addEmail()"
                             class="bg-green-500 text-white px-3 py-1 rounded mt-2">+ Add Email</button>
+                        <!-- Validation messages -->
+                        <div *ngIf="emails.invalid && (emails.dirty || emails.touched)" class="text-red-500 text-sm">
+                            <span *ngIf="emails.errors?.['required']">Email is required.</span>
+                            <span *ngIf="emails.errors?.['email']">Invalid email address.</span>
+                        </div>
                     </div>
 
                     <!-- Phone Numbers -->

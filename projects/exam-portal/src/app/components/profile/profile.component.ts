@@ -5,6 +5,8 @@ import { ProfileService } from '../../service/profile.service';
 import { Router } from '@angular/router';
 import { LoadProfileContract } from '../../contracts/LoadProfileContract';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ProfileValidator } from './profile.validator';
+import { ToastService } from '../../service/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,15 +28,16 @@ export class ProfileComponent implements OnInit {
     private auth: AuthService,
     private profileService: ProfileService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastService: ToastService
   ) {
     this.profileForm = this.fb.group({
-      firstName: ['', Validators.required],
+      firstName: ['', [ProfileValidator.requiredField()]],
       midlename: [''],
-      lastname: ['', Validators.required],
-      dob: ['', Validators.required],
-      emails: this.fb.array([]),
-      phoneNumbers: this.fb.array([]),
+      lastname: ['', [ProfileValidator.requiredField()]],
+      dob: ['', [ProfileValidator.requiredField()]],
+      emails: this.fb.array([], [ProfileValidator.minArrayLength(1)]),
+      phoneNumbers: this.fb.array([], [ProfileValidator.minArrayLength(1)]),
       addreses: this.fb.array([])
     });
   }
@@ -157,8 +160,27 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  private markAllFieldsDirty(formGroup: any) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormArray) {
+        control.controls.forEach(ctrl => ctrl.markAsDirty());
+      } else {
+        control.markAsDirty();
+      }
+    });
+  }
+  
+  private showErrorToast(message: string) {
+    this.toastService.show(message);
+  }
   // -------------------- SUBMIT PROFILE --------------------
   submitProfile() {
+    if (this.profileForm.invalid) {
+      this.markAllFieldsDirty(this.profileForm);
+      this.showErrorToast('Please fix the errors before submitting.');
+      return;
+    }
     const payload: any = { userName: this.userName };
 
     // Top-level fields
