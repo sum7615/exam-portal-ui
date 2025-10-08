@@ -7,6 +7,11 @@ import { LoadProfileContract } from '../../contracts/LoadProfileContract';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ProfileValidator } from './profile.validator';
 import { ToastService } from '../../service/toast.service';
+import { UpdateAddressReq } from '../../contracts/UpdateAddressReq';
+import { Countries } from '../../contracts/Countries';
+import { States } from '../../contracts/States';
+import { Cities } from '../../contracts/Cities';
+import { Lookup } from '../../util/lookup';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +26,12 @@ export class ProfileComponent implements OnInit {
   isEditing = false;
   roles: string[] = [];
   actions: string[] = [];
-  activeTab :string = 'address';
+  activeTab: string = 'address';
+  countries: Countries[] = [];
+  states: States[] = [];
+  cities: Cities[] = [];
+  statesByIndex: States[][] = [];
+  citiesByIndex: Cities[][] = [];
 
   constructor(
     private user: UserService,
@@ -29,7 +39,8 @@ export class ProfileComponent implements OnInit {
     private profileService: ProfileService,
     private router: Router,
     private fb: FormBuilder,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private lookup: Lookup
   ) {
     this.profileForm = this.fb.group({
       firstName: ['', [ProfileValidator.requiredField()]],
@@ -42,11 +53,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     if (!this.auth.getAccessToken()) {
       this.router.navigate(['/login']);
     }
 
+    await this.fetchCountries();
     this.userName = this.auth.getUsername();
 
     this.profileService.loadProfile().subscribe({
@@ -74,6 +86,34 @@ export class ProfileComponent implements OnInit {
     return this.roles.includes('Admin');
   }
 
+  async fetchCities(stateId: number) {
+    try {
+      const data = await this.lookup.fetchCities(stateId); // wait for the data
+      this.cities = data;
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+      this.cities = [];
+    }
+
+  }
+  async fetchStates(countryId: number) {
+    try {
+      const data = await this.lookup.fetchStates(countryId); // wait for the data
+      this.states = data; // assign it
+    }
+    catch (error) {
+      console.error('Error fetching states:', error);
+      this.states = [];
+    }
+  }
+  async fetchCountries() {
+    try {
+      const data = await this.lookup.fetchCountries(); // wait for the data
+      this.countries = data; // assign it
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+    }
+  }
   enableEdit() {
     this.isEditing = true;
     this.profileForm.enable();
@@ -98,7 +138,7 @@ export class ProfileComponent implements OnInit {
     this.profileForm.disable();
   }
 
-  // -------------------- FORMARRAY GETTERS --------------------
+  // -------------------- FORM ARRAY GETTERS --------------------
   get emails(): FormArray {
     return this.profileForm.get('emails') as FormArray;
   }
@@ -139,27 +179,113 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  private populateAddresses(addresses: any[]) {
+  updateCity(i: number) {
+
+    const cityName = this.addreses.at(i).get('cityEng')?.value;
+    const city = this.cities.find(c => c.name === cityName);
+    if (city) {
+      this.addreses.at(i).patchValue({
+        cityEng: city.name,
+        cityId: city.id
+      });
+    } else {
+      this.addreses.at(i).patchValue({
+        cityEng: '',
+        cityId: 0
+      });
+    }
+  }
+
+  async updateState(i: number) {
+    const group = this.addreses.at(i);
+    const stateName = group.get('stateEng')?.value;
+    const states = this.statesByIndex[i] || [];
+    const state = states.find(s => s.name === stateName);
+  
+    if (state) {
+      group.patchValue({
+        stateEng: state.name,
+        stateId: state.id,
+        cityEng: ''
+      });
+  
+      const cities = await this.lookup.fetchCities(state.id);
+      this.citiesByIndex[i] = cities;
+    } else {
+      this.citiesByIndex[i] = [];
+    }
+  }
+  
+
+  async updateCountry(i: number) {
+    const group = this.addreses.at(i);
+    const countryName = group.get('countryEng')?.value;
+    const country = this.countries.find(c => c.name === countryName);
+  
+    if (country) {
+      group.patchValue({
+        countryEng: country.name,
+        countryIso3: country.iso3,
+        stateEng: '',
+        cityEng: ''
+      });
+  
+      const states = await this.lookup.fetchStates(country.id);
+      this.statesByIndex[i] = states;
+      this.citiesByIndex[i] = [];
+    } else {
+      this.statesByIndex[i] = [];
+      this.citiesByIndex[i] = [];
+    }
+  }
+  
+  
+  private async populateAddresses(addresses: any[]) {
     this.addreses.clear();
-    addresses.forEach(addr => {
+    this.statesByIndex = [];
+    this.citiesByIndex = [];
+  
+    for (let i = 0; i < addresses.length; i++) {
+      const addr = addresses[i];
+  
+      const country = this.countries.find(c => c.iso3 === addr.countryIso3);
+      const countryId = country?.id || 0;
+      const countryName = country?.name || '';
+  
+      const states = await this.lookup.fetchStates(countryId);
+      this.statesByIndex[i] = states;
+  
+      const state = states.find(s => s.id === addr.stateId);
+      const stateName = state?.name || '';
+  
+      const cities = await this.lookup.fetchCities(state?.id || 0);
+      this.citiesByIndex[i] = cities;
+  
+      const city = cities.find(c => c.id === addr.cityId);
+      const cityName = city?.name || '';
+  
       this.addreses.push(
         this.fb.group({
           addressTypeName: [addr.addressTypeName || ''],
-          mainStreet: [addr.mainStreet || ''],
-          street1: [addr.street1 || ''],
-          street2: [addr.street2 || ''],
-          street3: [addr.street3 || ''],
-          street4: [addr.street4 || ''],
-          countryEng: [addr.countryEng || ''],
-          stateEng: [addr.stateEng || ''],
-          cityEng: [addr.cityEng || ''],
-          pincode: [addr.pincode || ''],
-          landmark: [addr.landmark || '']
+          mainStreet: [{ value: addr.mainStreet || '', disabled: !this.isEditing }],
+          street1: [{ value: addr.street1 || '', disabled: !this.isEditing }],
+          street2: [{ value: addr.street2 || '', disabled: !this.isEditing }],
+          street3: [{ value: addr.street3 || '', disabled: !this.isEditing }],
+          street4: [{ value: addr.street4 || '', disabled: !this.isEditing }],
+          countryEng: [{ value: countryName, disabled: !this.isEditing }],
+          countryIso3: [{ value: addr.countryIso3 || '', disabled: !this.isEditing }],
+          stateEng: [{ value: stateName, disabled: !this.isEditing }],
+          stateId: [{ value: state?.id || 0, disabled: !this.isEditing }],
+          cityEng: [{ value: cityName, disabled: !this.isEditing }],
+          cityId: [{ value: city?.id || 0, disabled: !this.isEditing }],
+          pincode: [{ value: addr.pincode || '', disabled: !this.isEditing }],
+          landmark: [{ value: addr.landmark || '', disabled: !this.isEditing }]
         })
       );
-    });
+    }
   }
-
+  
+  
   private markAllFieldsDirty(formGroup: any) {
     Object.keys(formGroup.controls).forEach(key => {
       const control = formGroup.get(key);
@@ -170,7 +296,35 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-  
+  public updateAddress(i: number) {
+    const payload: UpdateAddressReq = {
+      addresTypeId: this.profileData.addreses[i].addressTypeId,
+      cityId: this.addreses.at(i).get('cityId')?.value || 0,
+      isActive: this.profileData.addreses[i].isActive,
+      userName: this.userName || '',
+      mainStreet: this.addreses.at(i).get('mainStreet')?.value || '',
+      street1: this.addreses.at(i).get('street1')?.value || '',
+      street2: this.addreses.at(i).get('street2')?.value || '',
+      street3: this.addreses.at(i).get('street3')?.value || '',
+      street4: this.addreses.at(i).get('street4')?.value || '',
+      pincode: this.addreses.at(i).get('pincode')?.value || '',
+      landmark: this.addreses.at(i).get('landmark')?.value || '',
+      countryIso3: this.addreses.at(i).get('countryIso3')?.value || '',
+      stateId: this.addreses.at(i).get('stateId')?.value || 0,
+
+    };
+
+    this.profileService.updateProfile(payload).subscribe({
+      next: res => {
+        this.showErrorToast('Address updated successfully.');
+      },
+      error: err => {
+        console.error('Error updating address', err);
+        this.showErrorToast('Error updating address. Please try again.');
+      }
+    });
+  }
+
   private showErrorToast(message: string) {
     this.toastService.show(message);
   }
@@ -207,9 +361,9 @@ export class ProfileComponent implements OnInit {
     });
 
     // New emails
-    currentEmails.forEach((emailValue: { id?: number; address: string }) => {
-      const exists = this.profileData.emails.some((p: { id?: number; address: string }) => p.address === emailValue.address);
-      if (!exists && emailValue.address) phonesPayload.push({ action: 'ADD', address: emailValue.address });
+    currentEmails.forEach((emailValue: string) => {
+      const exists = this.profileData.emails.some((p: { id?: number; address: string }) => p.address === emailValue);
+      if (!exists && emailValue) emailsPayload.push({ action: 'ADD', address: emailValue });
     });
 
     if (emailsPayload.length > 0) payload.emails = emailsPayload;
@@ -229,9 +383,11 @@ export class ProfileComponent implements OnInit {
       }
     });
 
-    currentPhones.forEach((phone: { id?: number; number: string }) => {
-      const exists = this.profileData.phoneNumbers.some((p: { id?: number; number: string }) => p.number === phone.number);
-      if (!exists && phone.number) phonesPayload.push({ action: 'ADD', number: phone.number });
+    currentPhones.forEach((phone: string) => {
+      const exists = this.profileData.phoneNumbers.some((p: { id?: number; number: string }) => p.number === phone);
+      if (!exists && phone) {
+        phonesPayload.push({ action: 'ADD', number: phone });
+      }
     });
 
     if (phonesPayload.length > 0) payload.telephones = phonesPayload;

@@ -12,5 +12,9 @@ export class Constant{
     public static REFRESH_TOKEN_API='/user/refresh-token';
     public static LOAD_PROFILE_API='/user/profile/';
     public static UPDATE_PROFILE_API='/user/profile';
+    public static UPDATE_ADDRESS_API='/user/update-address';
+    public static FETCH_COUNTRIES = 'user/lookup/country'
+    public static FETCH_STATE = 'user/lookup/state'
+    public static FETCH_CITY = 'user/lookup/city'
     // constructor(){}
 }
