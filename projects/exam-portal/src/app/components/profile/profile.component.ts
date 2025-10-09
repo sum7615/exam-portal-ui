@@ -12,6 +12,10 @@ import { Countries } from '../../contracts/Countries';
 import { States } from '../../contracts/States';
 import { Cities } from '../../contracts/Cities';
 import { Lookup } from '../../util/lookup';
+import { AddressTypeRes } from '../../contracts/AddressTypeRes';
+import { OnLoad } from '../../service/OnLoad';
+import { AddressTypeDialogComponent } from './address-type-dialog/address-type-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profile',
@@ -32,7 +36,7 @@ export class ProfileComponent implements OnInit {
   cities: Cities[] = [];
   statesByIndex: States[][] = [];
   citiesByIndex: Cities[][] = [];
-
+  allAddressType : AddressTypeRes[]=[];
   constructor(
     private user: UserService,
     private auth: AuthService,
@@ -40,7 +44,9 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private toastService: ToastService,
-    private lookup: Lookup
+    private lookup: Lookup,
+    private onLoad: OnLoad,
+    private dialog: MatDialog 
   ) {
     this.profileForm = this.fb.group({
       firstName: ['', [ProfileValidator.requiredField()]],
@@ -53,11 +59,20 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  loadAddressType(){
+    this.onLoad.loadAddressType().subscribe({
+      next: (data: AddressTypeRes[]) => {
+        this.allAddressType = data;
+      },
+      error: (err) => console.error('Error loading address types:', err)
+    });
+  }
   async ngOnInit() {
     if (!this.auth.getAccessToken()) {
       this.router.navigate(['/login']);
     }
 
+    this.loadAddressType();
     await this.fetchCountries();
     this.userName = this.auth.getUsername();
 
@@ -178,24 +193,27 @@ export class ProfileComponent implements OnInit {
       this.phoneNumbers.push(this.fb.control(phone.number, Validators.required));
     });
   }
-
-  updateCity(i: number) {
-
-    const cityName = this.addreses.at(i).get('cityEng')?.value;
-    const city = this.cities.find(c => c.name === cityName);
+  async updateCity(i: number) {
+    const group = this.addreses.at(i);
+    const cityName = group.get('cityEng')?.value;
+    const cities = this.citiesByIndex[i] || [];
+    const city = cities.find(c => c.name === cityName);
+  
     if (city) {
-      this.addreses.at(i).patchValue({
+      group.patchValue({
         cityEng: city.name,
         cityId: city.id
       });
+  
     } else {
-      this.addreses.at(i).patchValue({
+      group.patchValue({
         cityEng: '',
         cityId: 0
       });
+  
     }
   }
-
+  
   async updateState(i: number) {
     const group = this.addreses.at(i);
     const stateName = group.get('stateEng')?.value;
@@ -267,6 +285,8 @@ export class ProfileComponent implements OnInit {
       this.addreses.push(
         this.fb.group({
           addressTypeName: [addr.addressTypeName || ''],
+          addressId: [addr.addressId || 0],
+          addressTypeid: [addr.addressTypeId || 0],
           mainStreet: [{ value: addr.mainStreet || '', disabled: !this.isEditing }],
           street1: [{ value: addr.street1 || '', disabled: !this.isEditing }],
           street2: [{ value: addr.street2 || '', disabled: !this.isEditing }],
@@ -296,35 +316,7 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-  public updateAddress(i: number) {
-    const payload: UpdateAddressReq = {
-      addresTypeId: this.profileData.addreses[i].addressTypeId,
-      cityId: this.addreses.at(i).get('cityId')?.value || 0,
-      isActive: this.profileData.addreses[i].isActive,
-      userName: this.userName || '',
-      mainStreet: this.addreses.at(i).get('mainStreet')?.value || '',
-      street1: this.addreses.at(i).get('street1')?.value || '',
-      street2: this.addreses.at(i).get('street2')?.value || '',
-      street3: this.addreses.at(i).get('street3')?.value || '',
-      street4: this.addreses.at(i).get('street4')?.value || '',
-      pincode: this.addreses.at(i).get('pincode')?.value || '',
-      landmark: this.addreses.at(i).get('landmark')?.value || '',
-      countryIso3: this.addreses.at(i).get('countryIso3')?.value || '',
-      stateId: this.addreses.at(i).get('stateId')?.value || 0,
-
-    };
-
-    this.profileService.updateProfile(payload).subscribe({
-      next: res => {
-        this.showErrorToast('Address updated successfully.');
-      },
-      error: err => {
-        console.error('Error updating address', err);
-        this.showErrorToast('Error updating address. Please try again.');
-      }
-    });
-  }
-
+ 
   private showErrorToast(message: string) {
     this.toastService.show(message);
   }
@@ -419,5 +411,101 @@ export class ProfileComponent implements OnInit {
 
   removePhone(index: number) {
     this.phoneNumbers.removeAt(index);
+  }
+
+
+  // ---------------------Adding or removing address ---------------------
+
+  addAddress() {
+    const dialogRef = this.dialog.open(AddressTypeDialogComponent, {
+      width: '20rem'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addreses.push(
+          this.fb.group({
+            addressTypeName: [result.addressTypeName],
+            addressTypeid: [result.addressTypeId || 0],
+            mainStreet: [{ value: '', disabled: !this.isEditing }],
+            street1: [{ value: '', disabled: !this.isEditing }],
+            street2: [{ value: '', disabled: !this.isEditing }],
+            street3: [{ value: '', disabled: !this.isEditing }],
+            street4: [{ value: '', disabled: !this.isEditing }],
+            countryEng: [{ value: '', disabled: !this.isEditing }],
+            countryIso3: [{ value: '', disabled: !this.isEditing }],
+            stateEng: [{ value: '', disabled: !this.isEditing }],
+            stateId: [{ value: 0, disabled: !this.isEditing }],
+            cityEng: [{ value: '', disabled: !this.isEditing }],
+            cityId: [{ value: 0, disabled: !this.isEditing }],
+            pincode: [{ value: '', disabled: !this.isEditing }],
+            landmark: [{ value: '', disabled: !this.isEditing }]
+          })
+        );
+  
+        this.statesByIndex.push([]);
+        this.citiesByIndex.push([]);
+      }
+    });
+  }
+  public updateAddress(i: number) {
+    let isActive = true;
+    let addressId =0;
+    try {
+      addressId=this.addreses.at(i).get('addressId')?.value;
+
+    }catch{
+    
+    }
+    const payload: UpdateAddressReq = {
+      addresTypeId: this.addreses.at(i).get('addressTypeid')?.value || 0,
+      cityId: this.addreses.at(i).get('cityId')?.value || 0,
+      addressId:addressId,
+      userName: this.userName || '',
+      mainStreet: this.addreses.at(i).get('mainStreet')?.value || '',
+      street1: this.addreses.at(i).get('street1')?.value || '',
+      street2: this.addreses.at(i).get('street2')?.value || '',
+      street3: this.addreses.at(i).get('street3')?.value || '',
+      street4: this.addreses.at(i).get('street4')?.value || '',
+      pincode: this.addreses.at(i).get('pincode')?.value || '',
+      landmark: this.addreses.at(i).get('landmark')?.value || '',
+      countryIso3: this.addreses.at(i).get('countryIso3')?.value || '',
+      stateId: this.addreses.at(i).get('stateId')?.value || 0,
+
+    };
+
+    this.profileService.updateAddress(payload).subscribe({
+      next: res => {
+        this.showErrorToast('Address updated successfully.');
+        this.profileForm.disable();
+        this.isEditing = false;
+      },
+      error: err => {
+        console.error('Error updating address', err);
+        this.showErrorToast('Error updating address. Please try again.');
+      }
+    });
+  }
+  removeAddress(index: number) {
+    let addressId = this.addreses.at(index).get('addressId')?.value;
+    if (addressId && addressId!=0 && this.profileData.addreses.some((addr: any) => addr.addressId === addressId)) {
+      this.profileService.removeAddress(addressId).subscribe({
+        next: res => {
+          this.showErrorToast('Address removed successfully.');
+          this.addreses.removeAt(index);
+          this.statesByIndex.splice(index, 1);
+          this.citiesByIndex.splice(index, 1);
+        },
+        error: err => {
+          console.error('Error removing address', err);
+          this.showErrorToast('Error removing address. Please try again.');
+        }
+      });
+    }else{
+      this.addreses.removeAt(index);
+      this.statesByIndex.splice(index, 1);
+      this.citiesByIndex.splice(index, 1);
+    }
+    
   }
 }

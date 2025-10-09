@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Select Address Type</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Address Type</mat-label>
+      <mat-select formControlName="addressTypeName" (selectionChange)="updateAddressType($event)">
+        <mat-option value="" disabled>Select Address Type</mat-option>
+        <mat-option *ngFor="let addressType of allAddressType" 
+                    [value]="addressType.addressTypeName">
+          {{ addressType.addressTypeName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="submit()">OK</button>
+</mat-dialog-actions>

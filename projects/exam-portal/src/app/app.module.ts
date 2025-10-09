@@ -4,21 +4,21 @@ import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatError } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {LayoutModule} from '@angular/cdk/layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { LayoutModule } from '@angular/cdk/layout';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../app/interceptors/auth.interceptor';
 
 import { HomeComponent } from './components/home/home.component';
-import {HeaderComponent} from './components/parts/header/header.component'
-import {FooterComponent} from './components/parts/footer/footer.component'
+import { HeaderComponent } from './components/parts/header/header.component'
+import { FooterComponent } from './components/parts/footer/footer.component'
 import { LoginComponent } from './auth/login/login.component';
 import { AppComponent } from './app.component';
 import { TermsComponent } from './components/terms/terms.component';
@@ -33,8 +33,11 @@ import { ForgetComponent } from './auth/forget/forget.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashHomeComponent } from './components/dasboard-component/dash-home/dash-home.component';
 import { TestsComponent } from './components/dasboard-component/tests/tests.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         RegisterComponent,
         HomeComponent,
         HeaderComponent,
@@ -61,8 +64,12 @@ import { TestsComponent } from './components/dasboard-component/tests/tests.comp
         MatInputModule,
         MatButtonModule,
         MatCardModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatSelectModule,
         MatToolbarModule,
         MatIconModule,
         LayoutModule,
-        MatSidenavModule], providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, provideHttpClient(withInterceptorsFromDi())] })
+        MatSidenavModule], providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, provideHttpClient(withInterceptorsFromDi())]
+})
 export class AppModule { }

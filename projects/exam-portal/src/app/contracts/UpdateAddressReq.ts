@@ -2,7 +2,6 @@ export interface UpdateAddressReq {
         addresTypeId:number,
         cityId: number,
         stateId: number,
-        isActive: boolean,
         userName: string,
         mainStreet:string,
         street1: string,
@@ -11,5 +10,6 @@ export interface UpdateAddressReq {
         street4: string,
         pincode: string,
         landmark: string,
-        countryIso3: string
+        countryIso3: string,
+        addressId: number
 }

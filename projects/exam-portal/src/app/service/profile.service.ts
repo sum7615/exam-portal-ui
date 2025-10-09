@@ -22,8 +22,16 @@ export class ProfileService{
   loadProfile():Observable<LoadProfileContract>{
     return this.http.get<LoadProfileContract>(Constant.LOAD_PROFILE_API+this.auth.getUsername());
   }
-  updateProfile(data:UpdateAddressReq):Observable<any>{
+  updateAddress(data:UpdateAddressReq):Observable<any>{
     return this.http.put<any>(Constant.UPDATE_ADDRESS_API,data);
+  }
+
+  removeAddress(addressId: number) {
+    let params = {
+      addressId: addressId.toString(),
+      userName: this.auth.getUsername()
+    };
+    return this.http.delete<any>(Constant.REMOVE_ADDRESS_API, { body:params });
   }
 
   fetchCountries():Observable<Countries[]>{

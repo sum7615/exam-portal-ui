@@ -16,5 +16,6 @@ export class Constant{
     public static FETCH_COUNTRIES = 'user/lookup/country'
     public static FETCH_STATE = 'user/lookup/state'
     public static FETCH_CITY = 'user/lookup/city'
-    // constructor(){}
+    public static REMOVE_ADDRESS_API='/user/remove-address';
+    public static FETCH_ADDRESS_TYPE='/user/address-type';
 }
