@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
   cities: Cities[] = [];
   statesByIndex: States[][] = [];
   citiesByIndex: Cities[][] = [];
-  allAddressType : AddressTypeRes[]=[];
+  allAddressType: AddressTypeRes[] = [];
   constructor(
     private user: UserService,
     private auth: AuthService,
@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit {
     private toastService: ToastService,
     private lookup: Lookup,
     private onLoad: OnLoad,
-    private dialog: MatDialog 
+    private dialog: MatDialog
   ) {
     this.profileForm = this.fb.group({
       firstName: ['', [ProfileValidator.requiredField()]],
@@ -59,7 +59,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  loadAddressType(){
+  loadAddressType() {
     this.onLoad.loadAddressType().subscribe({
       next: (data: AddressTypeRes[]) => {
         this.allAddressType = data;
@@ -198,48 +198,48 @@ export class ProfileComponent implements OnInit {
     const cityName = group.get('cityEng')?.value;
     const cities = this.citiesByIndex[i] || [];
     const city = cities.find(c => c.name === cityName);
-  
+
     if (city) {
       group.patchValue({
         cityEng: city.name,
         cityId: city.id
       });
-  
+
     } else {
       group.patchValue({
         cityEng: '',
         cityId: 0
       });
-  
+
     }
   }
-  
+
   async updateState(i: number) {
     const group = this.addreses.at(i);
     const stateName = group.get('stateEng')?.value;
     const states = this.statesByIndex[i] || [];
     const state = states.find(s => s.name === stateName);
-  
+
     if (state) {
       group.patchValue({
         stateEng: state.name,
         stateId: state.id,
         cityEng: ''
       });
-  
+
       const cities = await this.lookup.fetchCities(state.id);
       this.citiesByIndex[i] = cities;
     } else {
       this.citiesByIndex[i] = [];
     }
   }
-  
+
 
   async updateCountry(i: number) {
     const group = this.addreses.at(i);
     const countryName = group.get('countryEng')?.value;
     const country = this.countries.find(c => c.name === countryName);
-  
+
     if (country) {
       group.patchValue({
         countryEng: country.name,
@@ -247,7 +247,7 @@ export class ProfileComponent implements OnInit {
         stateEng: '',
         cityEng: ''
       });
-  
+
       const states = await this.lookup.fetchStates(country.id);
       this.statesByIndex[i] = states;
       this.citiesByIndex[i] = [];
@@ -256,56 +256,75 @@ export class ProfileComponent implements OnInit {
       this.citiesByIndex[i] = [];
     }
   }
-  
-  
+
+  // -------------------- EMAIL METHODS --------------------
+  addEmail() {
+    this.emails.push(this.fb.control('', [Validators.required, Validators.email]));
+  }
+
+  removeEmail(index: number) {
+    this.emails.removeAt(index);
+  }
+
+  // -------------------- PHONE METHODS --------------------
+  addPhone() {
+    this.phoneNumbers.push(this.fb.control('', Validators.required));
+  }
+
+  removePhone(index: number) {
+    this.phoneNumbers.removeAt(index);
+  }
+
+
+
   private async populateAddresses(addresses: any[]) {
     this.addreses.clear();
     this.statesByIndex = [];
     this.citiesByIndex = [];
-  
+
     for (let i = 0; i < addresses.length; i++) {
       const addr = addresses[i];
-  
+
       const country = this.countries.find(c => c.iso3 === addr.countryIso3);
       const countryId = country?.id || 0;
       const countryName = country?.name || '';
-  
+
       const states = await this.lookup.fetchStates(countryId);
       this.statesByIndex[i] = states;
-  
+
       const state = states.find(s => s.id === addr.stateId);
       const stateName = state?.name || '';
-  
+
       const cities = await this.lookup.fetchCities(state?.id || 0);
       this.citiesByIndex[i] = cities;
-  
+
       const city = cities.find(c => c.id === addr.cityId);
       const cityName = city?.name || '';
-  
+
       this.addreses.push(
         this.fb.group({
           addressTypeName: [addr.addressTypeName || ''],
           addressId: [addr.addressId || 0],
           addressTypeid: [addr.addressTypeId || 0],
-          mainStreet: [{ value: addr.mainStreet || '', disabled: !this.isEditing }],
-          street1: [{ value: addr.street1 || '', disabled: !this.isEditing }],
+          mainStreet: [{ value: addr.mainStreet || '', disabled: !this.isEditing }, Validators.required],
+          street1: [{ value: addr.street1 || '', disabled: !this.isEditing }, Validators.required],
           street2: [{ value: addr.street2 || '', disabled: !this.isEditing }],
           street3: [{ value: addr.street3 || '', disabled: !this.isEditing }],
           street4: [{ value: addr.street4 || '', disabled: !this.isEditing }],
-          countryEng: [{ value: countryName, disabled: !this.isEditing }],
+          countryEng: [{ value: countryName, disabled: !this.isEditing }, Validators.required],
           countryIso3: [{ value: addr.countryIso3 || '', disabled: !this.isEditing }],
-          stateEng: [{ value: stateName, disabled: !this.isEditing }],
+          stateEng: [{ value: stateName, disabled: !this.isEditing }, Validators.required],
           stateId: [{ value: state?.id || 0, disabled: !this.isEditing }],
-          cityEng: [{ value: cityName, disabled: !this.isEditing }],
+          cityEng: [{ value: cityName, disabled: !this.isEditing }, Validators.required],
           cityId: [{ value: city?.id || 0, disabled: !this.isEditing }],
-          pincode: [{ value: addr.pincode || '', disabled: !this.isEditing }],
-          landmark: [{ value: addr.landmark || '', disabled: !this.isEditing }]
+          pincode: [{ value: addr.pincode || '', disabled: !this.isEditing }, Validators.required],
+          landmark: [{ value: addr.landmark || '', disabled: !this.isEditing }, Validators.required]
         })
       );
     }
   }
-  
-  
+
+
   private markAllFieldsDirty(formGroup: any) {
     Object.keys(formGroup.controls).forEach(key => {
       const control = formGroup.get(key);
@@ -316,7 +335,7 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
- 
+
   private showErrorToast(message: string) {
     this.toastService.show(message);
   }
@@ -395,32 +414,13 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // -------------------- EMAIL METHODS --------------------
-  addEmail() {
-    this.emails.push(this.fb.control('', [Validators.required, Validators.email]));
-  }
-
-  removeEmail(index: number) {
-    this.emails.removeAt(index);
-  }
-
-  // -------------------- PHONE METHODS --------------------
-  addPhone() {
-    this.phoneNumbers.push(this.fb.control('', Validators.required));
-  }
-
-  removePhone(index: number) {
-    this.phoneNumbers.removeAt(index);
-  }
-
-
   // ---------------------Adding or removing address ---------------------
 
   addAddress() {
     const dialogRef = this.dialog.open(AddressTypeDialogComponent, {
       width: '20rem'
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.addreses.push(
@@ -442,25 +442,30 @@ export class ProfileComponent implements OnInit {
             landmark: [{ value: '', disabled: !this.isEditing }]
           })
         );
-  
+
         this.statesByIndex.push([]);
         this.citiesByIndex.push([]);
       }
     });
   }
   public updateAddress(i: number) {
-    let isActive = true;
-    let addressId =0;
-    try {
-      addressId=this.addreses.at(i).get('addressId')?.value;
 
-    }catch{
-    
+    if (this.profileForm.invalid) {
+      this.markAllFieldsDirty(this.profileForm);
+      this.showErrorToast('Please fix the errors before submitting.');
+      return;
+    }
+    let addressId = 0;
+    try {
+      addressId = this.addreses.at(i).get('addressId')?.value;
+
+    } catch {
+
     }
     const payload: UpdateAddressReq = {
       addresTypeId: this.addreses.at(i).get('addressTypeid')?.value || 0,
       cityId: this.addreses.at(i).get('cityId')?.value || 0,
-      addressId:addressId,
+      addressId: addressId,
       userName: this.userName || '',
       mainStreet: this.addreses.at(i).get('mainStreet')?.value || '',
       street1: this.addreses.at(i).get('street1')?.value || '',
@@ -475,37 +480,42 @@ export class ProfileComponent implements OnInit {
     };
 
     this.profileService.updateAddress(payload).subscribe({
-      next: res => {
+      next: () => {
         this.showErrorToast('Address updated successfully.');
         this.profileForm.disable();
         this.isEditing = false;
       },
       error: err => {
-        console.error('Error updating address', err);
-        this.showErrorToast('Error updating address. Please try again.');
+        const message = err?.error?.message || 'An error occurred. Please try again.';
+
+        this.showErrorToast(message);
       }
     });
   }
   removeAddress(index: number) {
     let addressId = this.addreses.at(index).get('addressId')?.value;
-    if (addressId && addressId!=0 && this.profileData.addreses.some((addr: any) => addr.addressId === addressId)) {
+    if (addressId && addressId != 0 && this.profileData.addreses.some((addr: any) => addr.addressId === addressId)) {
       this.profileService.removeAddress(addressId).subscribe({
         next: res => {
           this.showErrorToast('Address removed successfully.');
           this.addreses.removeAt(index);
           this.statesByIndex.splice(index, 1);
           this.citiesByIndex.splice(index, 1);
+          this.profileForm.disable();
+          this.isEditing = false;
         },
         error: err => {
           console.error('Error removing address', err);
           this.showErrorToast('Error removing address. Please try again.');
         }
       });
-    }else{
+    } else {
       this.addreses.removeAt(index);
       this.statesByIndex.splice(index, 1);
       this.citiesByIndex.splice(index, 1);
+      this.profileForm.disable();
+      this.isEditing = false;
     }
-    
+
   }
 }

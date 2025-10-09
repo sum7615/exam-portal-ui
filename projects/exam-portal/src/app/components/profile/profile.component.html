@@ -22,45 +22,46 @@
                 <!-- Names -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-gray-700 font-medium mb-1">First Name</label>
+                        <label class="block text-gray-400 font-medium mb-1">First Name</label>
                         <input formControlName="firstName"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
                         <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.dirty"
-                            class="text-red-500 text-sm">
+                            class="text-red-500">
                             First name is required
                         </div>
                     </div>
                     <div>
-                        <label class="block text-gray-700 font-medium mb-1">Middle Name</label>
+                        <label class="block text-gray-400 font-medium mb-1">Middle Name</label>
                         <input formControlName="midlename"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
                     </div>
                     <div>
-                        <label class="block text-gray-700 font-medium mb-1">Last Name</label>
+                        <label class="block text-gray-400 font-medium mb-1">Last Name</label>
                         <input formControlName="lastname"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
                         <div *ngIf="profileForm.get('lastname')?.invalid && profileForm.get('firstName')?.dirty"
-                            class="text-red-500 text-sm">
+                            class="text-red-500">
                             First name is required
                         </div>
                     </div>
                 </div>
 
-                <!-- DOB -->
+                
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- DOB -->
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">DOB</label>
+                    <label class="block text-gray-400 font-medium mb-1">DOB</label>
                     <input type="date" formControlName="dob"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
                     <div *ngIf="profileForm.get('dob')?.invalid && profileForm.get('firstName')?.dirty"
-                        class="text-red-500 text-sm">
+                        class="text-red-500">
                         DOB is required
                     </div>
                 </div>
-
-                <div class="flex flex-col md:flex-row gap-4">
                     <!-- Emails -->
                     <div formArrayName="emails" class="space-y-2">
-                        <label class="block font-medium mb-1">Emails</label>
+                        <label class="block text-gray-400 font-medium mb-1">Emails</label>
                         <div *ngFor="let email of emails.controls; let i = index" class="flex gap-2 items-center">
                             <input [formControlName]="i" class="w-full border rounded px-3 py-2" />
                             <button *ngIf="isEditing" type="button" (click)="removeEmail(i)"
@@ -77,7 +78,7 @@
 
                     <!-- Phone Numbers -->
                     <div formArrayName="phoneNumbers" class="space-y-2">
-                        <label class="block font-medium mb-1">Phone Numbers</label>
+                        <label class="block  text-gray-400 font-medium mb-1">Phone Numbers</label>
                         <div *ngFor="let phone of phoneNumbers.controls; let i = index" class="flex gap-2 items-center">
                             <input [formControlName]="i" class="w-full border rounded px-3 py-2" />
                             <button *ngIf="isEditing" type="button" (click)="removePhone(i)"
@@ -148,84 +149,136 @@
                         <div>
                             <div class="flex flex-col md:flex-row justify-between items-center">
                                 <!-- Left: Address type name -->
-                                <h4 class="text-md font-semibold text-gray-700 mb-2 md:mb-0">
-                                  {{ addressCtrl.value.addressTypeName }}
+                                <h4 class="text-md font-semibold text-gray-800 mb-2 md:mb-0">
+                                    {{ addressCtrl.value.addressTypeName }} Address
                                 </h4>
-                              
+
                                 <!-- Right: Buttons group -->
                                 <div class="flex space-x-2">
-                                  <button
-                                    *ngIf="isEditing"
-                                    class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                                    (click)="updateAddress(i)"
-                                  >
-                                    Update {{ addressCtrl.value.addressTypeName }} Address
-                                  </button>
-                              
-                                  <button
-                                    *ngIf="isEditing"
-                                    type="button"
-                                    (click)="removeAddress(i)"
-                                    class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                                  >
-                                    Remove {{ addressCtrl.value.addressTypeName }} Address
-                                  </button>
+                                    <button *ngIf="isEditing"
+                                        class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        (click)="updateAddress(i)">
+                                        Update {{ addressCtrl.value.addressTypeName }} Address
+                                    </button>
+
+                                    <button *ngIf="isEditing" type="button" (click)="removeAddress(i)"
+                                        class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                                        Remove {{ addressCtrl.value.addressTypeName }} Address
+                                    </button>
                                 </div>
-                              </div>
-                              
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <input formControlName="mainStreet" placeholder="Main Street"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                            <input formControlName="street1" placeholder="Street 1"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                            <input formControlName="street2" placeholder="Street 2"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                            <input formControlName="street3" placeholder="Street 3"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                            <input formControlName="street4" placeholder="Street 4"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">Main Street</label>
+                                    <input formControlName="mainStreet" placeholder="Main Street"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                    <div *ngIf="addressCtrl.get('mainStreet')?.invalid && addressCtrl.get('mainStreet')?.touched"
+                                        class="text-red-500">
+                                        Main Street is required
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">Street1</label>
+                                    <input formControlName="street1" placeholder="Street 1"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                    <div *ngIf="addressCtrl.get('street1')?.invalid && addressCtrl.get('street1')?.touched"
+                                        class="text-red-500">
+                                        Street1 is required
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">Street2</label>
+                                    <input formControlName="street2" placeholder="Street 2"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                </div>
+                                <div> <label class="block text-gray-400 font-medium mb-1">Street3</label>
+                                    <input formControlName="street3" placeholder="Street 3"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">Street4</label>
+                                    <input formControlName="street4" placeholder="Street 4"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">Pincode</label>
+                                    <input formControlName="pincode" placeholder="Pincode"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                    <div *ngIf="addressCtrl.get('pincode')?.invalid && addressCtrl.get('pincode')?.touched"
+                                        class="text-red-500">
+                                        Pincode is required
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">Landmark</label>
+                                    <input formControlName="landmark" placeholder="Landmark"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                    <div *ngIf="addressCtrl.get('landmark')?.invalid && addressCtrl.get('landmark')?.touched"
+                                        class="text-red-500">
+                                        Landmark is required
+                                    </div>
+                                </div>
+
+                                <!-- Country   -->
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">Country</label>
+                                    <select formControlName="countryEng" (blur)="updateCountry(i)"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                        <option value="" disabled>Select Country</option>
+                                        <option *ngFor="let country of countries" [ngValue]="country.name">
+                                            {{ country.name }}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="addressCtrl.get('countryEng')?.invalid && addressCtrl.get('countryEng')?.touched"
+                                        class="text-red-500">
+                                        Country is required
+                                    </div>
+                                </div>
+
+                                <!-- State dropdown -->
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">State</label>
+                                    <select formControlName="stateEng" (blur)="updateState(i)"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                        <option value="" disabled>Select State</option>
+                                        <option *ngFor="let state of statesByIndex[i]" [value]="state.name">
+                                            {{ state.name }}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="addressCtrl.get('stateEng')?.invalid && addressCtrl.get('stateEng')?.touched"
+                                        class="text-red-500">
+                                        State is required
+                                    </div>
+                                </div>
+
+                                <!-- City dropdown -->
+                                <div>
+                                    <label class="block text-gray-400 font-medium mb-1">City</label>
+                                    <select formControlName="cityEng" (blur)="updateCity(i)"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                        <option value="" disabled>Select City</option>
+                                        <option *ngFor="let city of citiesByIndex[i]" [value]="city.name">
+                                            {{ city.name }}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="addressCtrl.get('cityEng')?.invalid && addressCtrl.get('cityEng')?.touched"
+                                        class="text-red-500">
+                                        City is required
+                                    </div>
+                                </div>
 
 
-                            <!-- Country   -->
-                            <select formControlName="countryEng" (blur)="updateCountry(i)"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                                <option value="" disabled>Select Country</option>
-                                <option *ngFor="let country of countries" [ngValue]="country.name">
-                                    {{ country.name }}
-                                </option>
-                            </select>
-
-                            <!-- State dropdown -->
-                            <select formControlName="stateEng" (blur)="updateState(i)"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                                <option value="" disabled>Select State</option>
-                                <option *ngFor="let state of statesByIndex[i]" [value]="state.name">
-                                    {{ state.name }}
-                                </option>
-                            </select>
-
-                            <!-- City dropdown -->
-                            <select formControlName="cityEng" (blur)="updateCity(i)"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                                <option value="" disabled>Select City</option>
-                                <option *ngFor="let city of citiesByIndex[i]" [value]="city.name">
-                                    {{ city.name }}
-                                </option>
-                            </select>
 
 
+                            </div>
 
-                            <input formControlName="pincode" placeholder="Pincode"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                            <input formControlName="landmark" placeholder="Landmark"
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
                         </div>
-          
-                    </div>
                     </div>
                 </div>
             </div>
         </form>
-        <button *ngIf="isEditing" type="button" (click)="addAddress()" class="bg-red-500 text-white px-2 py-1 rounded">Add Address</button>
+        <button *ngIf="isEditing" type="button" (click)="addAddress()"
+            class="bg-red-500 text-white px-2 py-1 rounded">Add Address</button>
     </div>
 </div>

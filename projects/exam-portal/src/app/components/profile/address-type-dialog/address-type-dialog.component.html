@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>Select Address Type</h2>
+<h2 mat-dialog-title>Address Type</h2>
 
 <mat-dialog-content>
   <form [formGroup]="form">
     <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Address Type</mat-label>
+      <!-- <mat-label>Address Type</mat-label> -->
       <mat-select formControlName="addressTypeName" (selectionChange)="updateAddressType($event)">
         <mat-option value="" disabled>Select Address Type</mat-option>
         <mat-option *ngFor="let addressType of allAddressType" 
