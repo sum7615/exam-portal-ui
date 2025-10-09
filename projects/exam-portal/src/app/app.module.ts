@@ -35,7 +35,8 @@ import { DashHomeComponent } from './components/dasboard-component/dash-home/das
 import { TestsComponent } from './components/dasboard-component/tests/tests.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
     declarations: [
         RegisterComponent,
@@ -64,6 +65,8 @@ import { MatSelectModule } from '@angular/material/select';
         MatInputModule,
         MatButtonModule,
         MatCardModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
         MatDialogModule,
         MatFormFieldModule,
         MatSelectModule,

@@ -1,1 +1,98 @@
-<p>dash-home works!</p>
+<div class="flex h-screen bg-gradient-to-br from-orange-50 to-orange-100">
+
+    <!-- Main Content -->
+    <div class="flex-1 p-6 overflow-auto">
+        <div class="grid grid-cols-3 gap-6">
+            <!-- Upcoming Tests -->
+            <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
+                <h2 class="font-semibold text-lg mb-2">Upcoming Tests</h2>
+                <div class="flex flex-col items-center my-4">
+                    <mat-icon class="text-7xl text-yellow-400">science</mat-icon>
+                    <p class="text-gray-500 text-sm mt-2">Organic Chemistry (50 marks)</p>
+                    <p class="text-xs text-gray-400">Chapter 2 & 3 (MCQs)</p>
+                    <p class="text-xs text-red-400 mt-1">Deadline: 2nd May 2021</p>
+                </div>
+                <div class="flex justify-center gap-4">
+                    <button mat-flat-button color="accent">Take The Test</button>
+                    <button mat-stroked-button>Postpone</button>
+                </div>
+            </mat-card>
+
+            <!-- Performance -->
+            <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
+                <h2 class="font-semibold text-lg mb-2">Performance</h2>
+                <div class="text-3xl font-bold text-orange-500">6.5%</div>
+                <div class="text-sm text-gray-400 mb-2">Decline</div>
+                <div
+                    class="h-24 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl flex items-center justify-center text-gray-400">
+                    <span>📈 Chart Placeholder</span>
+                </div>
+            </mat-card>
+
+            <!-- Tasks -->
+            <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
+                <h2 class="font-semibold text-lg mb-4">Tasks</h2>
+                <div class="flex flex-col gap-2">
+                    <div class="flex justify-between text-sm">
+                        <span>Assignment I</span><span class="text-gray-400">Pending</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span>Assignment II</span><span class="text-green-500">Completed</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span>Chemistry Test</span><span class="text-red-500">Urgent</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span>Assignment III</span><span class="text-gray-400">Pending</span>
+                    </div>
+                </div>
+            </mat-card>
+
+            <!-- New Solved Papers -->
+            <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
+                <h2 class="font-semibold text-lg mb-4">New Solved Papers</h2>
+                <div class="flex items-center gap-4">
+                    <mat-progress-spinner mode="determinate" [value]="85" diameter="60"
+                        color="accent"></mat-progress-spinner>
+                    <div>
+                        <p class="font-semibold">Human Biology (Theory)</p>
+                        <p class="text-xs text-gray-400">5th Jan 2021 · 3 hours</p>
+                        <button mat-stroked-button color="accent" class="mt-2">Take A Look</button>
+                    </div>
+                </div>
+            </mat-card>
+
+            <!-- Recent Test Results -->
+            <mat-card class="col-span-2 p-6 rounded-2xl shadow-md">
+                <h2 class="font-semibold text-lg mb-4">Recent Test Results</h2>
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-sm">
+                        <span>Organic Chemistry - Chapter 1</span>
+                        <mat-progress-bar mode="determinate" [value]="35" color="accent"
+                            class="w-1/2"></mat-progress-bar>
+                        <span class="font-semibold">35%</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span>Human Biology - Chapter 2</span>
+                        <mat-progress-bar mode="determinate" [value]="85" color="accent"
+                            class="w-1/2"></mat-progress-bar>
+                        <span class="font-semibold">85%</span>
+                    </div>
+                </div>
+            </mat-card>
+
+            <!-- Calendar -->
+            <mat-card class="col-span-1 p-6 rounded-2xl shadow-md flex flex-col justify-between">
+                <div>
+                    <h2 class="font-semibold text-lg mb-2">Calendar</h2>
+                    <div class="flex justify-between text-gray-500 text-sm mb-3">
+                        <span>22 Tue</span><span class="font-bold text-black">23 Wed</span><span>24 Thu</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Chemistry Test</p>
+                    <p class="text-xs text-gray-400">9:00 pm</p>
+                </div>
+                <button mat-flat-button color="accent" class="mt-4">Monthly View</button>
+            </mat-card>
+        </div>
+    </div>
+</div>
