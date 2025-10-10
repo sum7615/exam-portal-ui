@@ -1,17 +1,35 @@
-<header class="container text-center">
-    <div class="row nav">
-        <div class="col-sm-3"  >
-            <img class="img-logo" [routerLink]="['home']" [src]="HeaderLogo" alt="SPXAM">
-            <a class="btn-reg btn home-link" [routerLink]="['home']">Home</a>
+<header class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Left section - Logo and Home link -->
+        <div class="flex items-center space-x-4">
+          <img 
+            class="h-8 w-auto cursor-pointer hover:opacity-80 transition-opacity" 
+            [routerLink]="['/home']" 
+            [src]="HeaderLogo" 
+            alt="SPXAM"
+          >
         </div>
-      
-        <div class="col-sm-9">
-            <div class="btn-reg btn btn-outline-primary" [routerLink]="['register']">
-              Register
-            </div>
-            <div class="btn-reg btn btn-outline-primary" [routerLink]="['login']">
-                Login
-              </div>
+  
+        <!-- Right section - Auth buttons -->
+        <div class="flex items-center space-x-3">
+          <button 
+            mat-stroked-button 
+            color="primary"
+            [routerLink]="['/register']"
+            class="border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors"
+          >
+            Register
+          </button>
+          <button 
+            mat-raised-button 
+            color="primary"
+            [routerLink]="['/login']"
+            class="bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+          >
+            Login
+          </button>
         </div>
+      </div>
     </div>
-</header>
+  </header>
