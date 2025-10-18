@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
   statesByIndex: States[][] = [];
   citiesByIndex: Cities[][] = [];
   allAddressType: AddressTypeRes[] = [];
+  profilePic ="";
   constructor(
     private user: UserService,
     private auth: AuthService,
@@ -79,6 +80,8 @@ export class ProfileComponent implements OnInit {
     this.profileService.loadProfile().subscribe({
       next: (data: LoadProfileContract) => {
         this.profileData = this.normalizeProfileData(data);
+        this.profilePic = "http://localhost:9096/"+this.profileData.image.imageUrl;
+
         this.populateForm(this.profileData);
         this.roles = data.roles || [];
         this.profileForm.disable();
