@@ -4,6 +4,8 @@ import { AuthService } from "./auth.service";
 import { Constant } from "../util/constant";
 import { Observable } from "rxjs";
 import { ResumeTestRes } from "../contracts/ResumeTestRes";
+import { AttemptMcqPayload } from "../contracts/AttemptMcqPayload";
+import { NextQsnRes } from "../contracts/NextQsnRes";
 
 @Injectable({
     providedIn:'root'
@@ -23,5 +25,18 @@ export class AttemptService{
         return this.http.post<ResumeTestRes[]>(Constant.RESUME_TEST_API, payload);
     }
 
+    attemptMCQ(payload:AttemptMcqPayload){
+        return this.http.post(Constant.ATTEMPT_MCQ_API, payload);
+    }
+
+    getQuestion(testId:number,userName:string):Observable<NextQsnRes>{
+        const payload = { userName, testId };
+        return this.http.post<NextQsnRes>(Constant.GET_QUESTION_API, payload);
+    }
+
+    finishTest(testId:number,userName:string):Observable<NextQsnRes>{
+        const payload = { userName, testId };
+        return this.http.post<NextQsnRes>(Constant.FINISH_TEST_API, payload);
+    }
 
 }

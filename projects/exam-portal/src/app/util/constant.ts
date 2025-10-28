@@ -28,4 +28,7 @@ export class Constant{
     //attempt
     public static START_TEST_API = "test/start/test"
     public static RESUME_TEST_API = "test/resume/test"
+    public static ATTEMPT_MCQ_API = "test/attempt/mcq";
+    public static GET_QUESTION_API = "test/get/qns";
+    public static FINISH_TEST_API="test/finish/test";
 }

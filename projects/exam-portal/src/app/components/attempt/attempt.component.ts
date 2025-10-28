@@ -7,6 +7,9 @@ import { AuthService } from '../../service/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResumeTestRes } from '../../contracts/ResumeTestRes';
 import { AttemptService } from '../../service/attempt.service';
+import { AttemptMcqPayload } from '../../contracts/AttemptMcqPayload';
+import { interval, Subscription } from 'rxjs';
+import { NextQsnRes } from '../../contracts/NextQsnRes';
 
 @Component({
   selector: 'app-attempt',
@@ -21,6 +24,10 @@ export class AttemptComponent {
   testId!:number;
   options:string[] =[];
   selectedOption: string | null = null;
+  private questionStartTime: number = 0;
+  private timerSub?: Subscription;
+  elapsedSeconds: number = 0;
+  prviouseQsnAnswered=true;
 
   constructor(private auth:AuthService,private router:Router,private attemptService:AttemptService,private route: ActivatedRoute){}
   ngOnInit(){
@@ -63,6 +70,72 @@ export class AttemptComponent {
     if (this.currentQsn.attemptedAns) {
       this.selectedOption = this.currentQsn.attemptedAns;
     }
+
+    this.questionStartTime = Date.now();
+    this.startTimer();
+  }
+  nextQuestion(){
+    if(this.usr){
+    this.attemptService.getQuestion(this.testId,this.usr).subscribe({
+      next:(res:NextQsnRes)=>{
+        const q:ResumeTestRes = {
+          id:res.id,
+          title:res.title,
+          problemStatement:res.problemStatement,
+          problemStatementImg:res.problemStatementImg,
+          o1:res.o1,
+          o2:res.o2,
+          o3:res.o3,
+          o4:res.o4,
+          o5:res.o5,
+          type:res.type,
+          attemptedAns:"",
+          marks:res.marks
+        }
+        this.currentQsn=q;
+        this.data.push(q);
+      },error:(err)=> console.error("error: ",err)
+    });
+    }
+    this.prviouseQsnAnswered=false;
+  }
+
+  changeAnswer(ans:string){
+    const timeTakenInSeconds = Math.floor((Date.now() - this.questionStartTime) / 1000);
+
+    const payload: AttemptMcqPayload = {
+      userName: this.usr!,
+      questionId: this.currentQsn.id,
+      testId: this.testId,
+      ans: ans,
+      timeTakenInSeconds: timeTakenInSeconds 
+    };
+    this.attemptService.attemptMCQ(payload).subscribe({
+
+    })
+    this.prviouseQsnAnswered=true;
+    this.stopTimer();
+  }
+
+  startTimer() {
+    this.stopTimer();
+    this.elapsedSeconds = 0;
+    this.timerSub = interval(1000).subscribe(() => this.elapsedSeconds++);
   }
   
+  stopTimer() {
+    if (this.timerSub) this.timerSub.unsubscribe();
+  }
+
+
+  finishTest(){
+    if(this.usr){
+    this.attemptService.finishTest(this.testId,this.usr).subscribe({
+     
+    });
+
+    this.router.navigate(['/dashboard/my'])
+  }
+  }
+
 }

@@ -1,4 +1,4 @@
-export interface ResumeTestRes{
+export interface NextQsnRes{
     id:number,
     title:string,
     problemStatement:string,
@@ -9,6 +9,5 @@ export interface ResumeTestRes{
     o4:string,
     o5:string,
     type:string,
-    attemptedAns:string,
     marks:number
 }
