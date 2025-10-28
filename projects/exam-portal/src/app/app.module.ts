@@ -8,7 +8,7 @@ import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -37,6 +37,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AttempHeaderComponent } from './components/attempt/attemp-header/attemp-header.component';
+import { AttemptComponent } from './components/attempt/attempt.component';
+import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
 @NgModule({
     declarations: [
         RegisterComponent,
@@ -53,8 +56,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         ForgetComponent,
         ProfileComponent,
         DashHomeComponent,
-        TestsComponent
-    ],
+        TestsComponent,
+        AttempHeaderComponent,
+        AttemptComponent
+   ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         CommonModule,
         AppRoutingModule,
@@ -72,7 +77,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatSelectModule,
         MatToolbarModule,
         MatIconModule,
+        MatToolbar,
+        MatRadioModule,
         LayoutModule,
+        FormsModule,
         MatSidenavModule], providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, provideHttpClient(withInterceptorsFromDi())]
 })
 export class AppModule { }

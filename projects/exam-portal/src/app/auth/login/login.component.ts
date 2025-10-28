@@ -6,6 +6,7 @@ import { UserService } from '../../service/UserService';
 import { LoginResponseContract } from '../../contracts/LoginResContract';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   public loginFrm:FormGroup; 
   RegImg:string|undefined='';
   isPasswordVisible = false;
-  constructor(private onload:OnLoad,private fb:FormBuilder,private userService:UserService,private router: Router){
+  constructor(private onload:OnLoad,private fb:FormBuilder,private userService:UserService,private router: Router,private auth:AuthService){
     this.loginFrm=this.fb.group({
       username:this.fb.control("",[Validators.required, Validators.pattern(/^[a-zA-Z0-9_]{3,16}$/)]),
       password:this.fb.control("",[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)])
@@ -33,6 +34,9 @@ export class LoginComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    if(this.auth.getAccessToken()){
+      this.router.navigate(["dashboard/my"])
+    }
     this.LoginLoad();
   }
   

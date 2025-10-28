@@ -2,97 +2,120 @@
 
     <!-- Main Content -->
     <div class="flex-1 p-6 overflow-auto">
-        <div class="grid grid-cols-3 gap-6">
+        <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+            <p>Loading dashboard data...</p>
+        </div>
+        <div  *ngIf="!isLoading" class="grid grid-cols-3 gap-6">
             <!-- Upcoming Tests -->
             <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
-                <h2 class="font-semibold text-lg mb-2">Upcoming Tests</h2>
-                <div class="flex flex-col items-center my-4">
-                    <mat-icon class="text-7xl text-yellow-400">science</mat-icon>
-                    <p class="text-gray-500 text-sm mt-2">Organic Chemistry (50 marks)</p>
-                    <p class="text-xs text-gray-400">Chapter 2 & 3 (MCQs)</p>
-                    <p class="text-xs text-red-400 mt-1">Deadline: 2nd May 2021</p>
+                <h2 class="font-semibold text-lg mb-2">Upcoming/Ongoing Test</h2>
+                <div class="flex flex-col items-center my-4" *ngIf="data.upcoming.length">
+                    <h2 class="text-7xl">   {{ data.upcoming[0].title}}</h2>
+                    <p class="text-gray-500 text-sm mt-2">{{ data.upcoming[0].description }} - {{data.upcoming[0].totalMark}} mark</p>
+                    <p class="text-xs text-red-400 mt-1">Deadline: {{data.upcoming[0].startTime|date:'medium'}}</p>
                 </div>
-                <div class="flex justify-center gap-4">
-                    <button mat-flat-button color="accent">Take The Test</button>
+                <div class="flex justify-center gap-4" *ngIf="data.upcoming.length">
+                    <button mat-flat-button color="accent" (click)="viewTest(data.upcoming[0].id)">View Test</button>
                     <button mat-stroked-button>Postpone</button>
                 </div>
             </mat-card>
 
             <!-- Performance -->
             <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
-                <h2 class="font-semibold text-lg mb-2">Performance</h2>
+                <h2 class="font-semibold text-lg mb-2">Performance average</h2>
                 <div class="text-3xl font-bold text-orange-500">6.5%</div>
                 <div class="text-sm text-gray-400 mb-2">Decline</div>
                 <div
                     class="h-24 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl flex items-center justify-center text-gray-400">
-                    <span>📈 Chart Placeholder</span>
+                    <span>📈 Chart</span>
                 </div>
             </mat-card>
 
             <!-- Tasks -->
             <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
                 <h2 class="font-semibold text-lg mb-4">Tasks</h2>
-                <div class="flex flex-col gap-2">
-                    <div class="flex justify-between text-sm">
-                        <span>Assignment I</span><span class="text-gray-400">Pending</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span>Assignment II</span><span class="text-green-500">Completed</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span>Chemistry Test</span><span class="text-red-500">Urgent</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span>Assignment III</span><span class="text-gray-400">Pending</span>
+                <div class="flex flex-col gap-2" >
+                    <div class="flex justify-between text-sm"*ngFor="let test of alltest">
+                        <span>{{test?.title}}</span><span class="text-gray-400">{{test?.status}}</span>
                     </div>
                 </div>
             </mat-card>
 
             <!-- New Solved Papers -->
             <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
-                <h2 class="font-semibold text-lg mb-4">New Solved Papers</h2>
-                <div class="flex items-center gap-4">
-                    <mat-progress-spinner mode="determinate" [value]="85" diameter="60"
-                        color="accent"></mat-progress-spinner>
+                <h2 class="font-semibold text-lg mb-4">Recent Solved Papers</h2>
+                <div class="flex items-center gap-4"*ngIf="data.past.length">
+                    <mat-progress-spinner mode="determinate" [value]="data.past[0].obtainedMark/data.past[0].totalMark*100" diameter="60" color="accent"> jjhh</mat-progress-spinner>
                     <div>
-                        <p class="font-semibold">Human Biology (Theory)</p>
-                        <p class="text-xs text-gray-400">5th Jan 2021 · 3 hours</p>
+                        <p class="font-semibold">{{ data.past[0].title }}</p>
+                        <p class="text-xs text-gray-400">{{ data.past[0].attemptStartTime }} - {{ data.past[0].attemptedDuration/60}} minutes</p>
                         <button mat-stroked-button color="accent" class="mt-2">Take A Look</button>
                     </div>
                 </div>
             </mat-card>
 
             <!-- Recent Test Results -->
-            <mat-card class="col-span-2 p-6 rounded-2xl shadow-md">
-                <h2 class="font-semibold text-lg mb-4">Recent Test Results</h2>
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center text-sm">
-                        <span>Organic Chemistry - Chapter 1</span>
-                        <mat-progress-bar mode="determinate" [value]="35" color="accent"
-                            class="w-1/2"></mat-progress-bar>
-                        <span class="font-semibold">35%</span>
+            <mat-card class="col-span-2 p-6 rounded-2xl shadow-lg bg-white">
+                <h2 class="font-bold text-xl mb-6 border-b pb-2">Recent Test Results</h2>
+              
+                <div *ngFor="let dt of data.past" class="mb-4">
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    
+                    <!-- Test Title -->
+                    <span class="text-gray-700 font-medium">{{ dt.title }}</span>
+                    
+                    <!-- Progress Bar and Percentage -->
+                    <div class="flex items-center w-full">
+                      <mat-progress-bar 
+                        mode="determinate" 
+                        [value]="(dt.obtainedMark / dt.totalMark) * 100" 
+                        color="accent" 
+                        class="flex-1 h-3 rounded-full">
+                      </mat-progress-bar>
+                      <span class="font-semibold text-gray-800">{{ ((dt.obtainedMark / dt.totalMark) * 100) | number:'1.0-0' }}%</span>
                     </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span>Human Biology - Chapter 2</span>
-                        <mat-progress-bar mode="determinate" [value]="85" color="accent"
-                            class="w-1/2"></mat-progress-bar>
-                        <span class="font-semibold">85%</span>
-                    </div>
+              
+                  </div>
                 </div>
-            </mat-card>
+              </mat-card>
+              
 
             <!-- Calendar -->
-            <mat-card class="col-span-1 p-6 rounded-2xl shadow-md flex flex-col justify-between">
-                <div>
-                    <h2 class="font-semibold text-lg mb-2">Calendar</h2>
-                    <div class="flex justify-between text-gray-500 text-sm mb-3">
-                        <span>22 Tue</span><span class="font-bold text-black">23 Wed</span><span>24 Thu</span>
-                    </div>
-                    <p class="text-sm text-gray-500">Chemistry Test</p>
-                    <p class="text-xs text-gray-400">9:00 pm</p>
+            <mat-card class="p-4 rounded-xl shadow-md w-64">
+                <div class="flex items-center justify-between mb-3">
+                  <button mat-icon-button (click)="prevDate()" [disabled]="selectedIndex === 0">
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+              
+                  <div class="flex justify-center gap-4 w-full">
+                    <span *ngIf="selectedIndex > 0" class="text-gray-400 text-sm">
+                      {{ getDateDisplay(selectedIndex - 1) }}
+                    </span>
+              
+                    <span class="font-bold text-black text-sm">
+                      {{ getDateDisplay(selectedIndex) }}
+                    </span>
+              
+                    <span *ngIf="selectedIndex < alltest.length - 1" class="text-gray-400 text-sm">
+                      {{ getDateDisplay(selectedIndex + 1) }}
+                    </span>
+                  </div>
+              
+                  <button mat-icon-button (click)="nextDate()" [disabled]="selectedIndex === alltest.length - 1">
+                    <mat-icon>chevron_right</mat-icon>
+                  </button>
                 </div>
-                <button mat-flat-button color="accent" class="mt-4">Monthly View</button>
-            </mat-card>
+              
+                <div class="text-center">
+                  <p class="text-gray-700 font-medium mb-1">{{ alltest[selectedIndex].title }}</p>
+                  <p class="text-xs text-gray-400">
+                    {{ alltest[selectedIndex].startTime | date:'shortTime' }}
+                  </p>
+                </div>
+              
+                <button mat-flat-button color="accent" class="mt-4 w-full">Monthly View</button>
+              </mat-card>
+              
         </div>
     </div>
 </div>

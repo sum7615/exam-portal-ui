@@ -13,6 +13,7 @@ import { ForgetComponent } from "./auth/forget/forget.component";
 import { DashHomeComponent } from "./components/dasboard-component/dash-home/dash-home.component";
 import { TestsComponent } from "./components/dasboard-component/tests/tests.component";
 import { ProfileComponent } from "./components/profile/profile.component";
+import { AttemptComponent } from "./components/attempt/attempt.component";
 const routes:Routes =[
     {path:"register",component:RegisterComponent},
     {path:"login",component:LoginComponent},
@@ -21,15 +22,16 @@ const routes:Routes =[
     {path:'privacy',component:PrivacyComponent},
     {path:"contact",component:ContactComponent},
     {path:"terms",component:TermsComponent},
+    {path:"attempt/:id/:resume",component:AttemptComponent},
     {path:"dashboard",component:DashboardComponent,
       children:[
         {path:"my",component:DashHomeComponent},
-        {path:"my/tests",component:TestsComponent},
+        {path:"my/test/:id",component:TestsComponent},
         {path:"my/profile",component:ProfileComponent}
       ]
     },
     {path:"forget",component:ForgetComponent},
-    {path:"**",component:NotFoundComponent},
+    {path:"**",component:NotFoundComponent}
 ];
 @NgModule({
 imports:[RouterModule.forRoot(routes)],

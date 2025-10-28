@@ -18,4 +18,14 @@ export class Constant{
     public static FETCH_CITY = 'user/lookup/city'
     public static REMOVE_ADDRESS_API='/user/remove-address';
     public static FETCH_ADDRESS_TYPE='/user/address-type';
+
+    // Dash board
+    public static FETCH_DASHBOARD_DATA= "/test/dashboard?userName="
+
+    public static FETCH_TEST_DATA ="test/view/test"
+
+
+    //attempt
+    public static START_TEST_API = "test/start/test"
+    public static RESUME_TEST_API = "test/resume/test"
 }
