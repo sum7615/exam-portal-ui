@@ -40,6 +40,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AttempHeaderComponent } from './components/attempt/attemp-header/attemp-header.component';
 import { AttemptComponent } from './components/attempt/attempt.component';
 import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
+import { AddTestComponent } from './components/add-test/add-test.component';
+import { QuestionComponent } from './components/question/question.component';
+import { QuestionBankComponent } from './components/question-bank/question-bank.component';
+import { ViewTestComponent } from './components/view-test/view-test.component';
+import { ViewQuestionComponent } from './components/view-question/view-question.component';
+import { ViewQuestionBankComponent } from './components/view-question-bank/view-question-bank.component';
+import { DashboardSidenavComponent } from './components/dasboard-component/dashboard-sidenav/dashboard-sidenav.component';
 @NgModule({
     declarations: [
         RegisterComponent,
@@ -58,7 +65,14 @@ import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
         DashHomeComponent,
         TestsComponent,
         AttempHeaderComponent,
-        AttemptComponent
+        AttemptComponent,
+        AddTestComponent,
+        QuestionComponent,
+        QuestionBankComponent,
+        ViewTestComponent,
+        ViewQuestionComponent,
+        ViewQuestionBankComponent,
+        DashboardSidenavComponent
    ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         CommonModule,

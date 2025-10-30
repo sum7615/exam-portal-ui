@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit ,AfterViewInit {
   fillerNav = Array.from({ length: 50 }, (_, i) => `Nav Item ${i + 1}`);
   @ViewChild('snav') snav!: MatSidenav;
   private _mobileQueryListener: () => void;
+  roles:string[]=[];
+  actions: string[]=[];
 
   constructor(private auth:AuthService,private router:Router) {
     const changeDetectorRef = inject(ChangeDetectorRef);
@@ -30,6 +32,11 @@ export class DashboardComponent implements OnInit ,AfterViewInit {
     if(!this.auth.getAccessToken()){
       this.router.navigate(['/login']);
     }
+    this.actions = this.auth.getActions();
+    this.roles = this.auth.getRoles();
+
+    console.log("Roles:"+this.roles);
+    console.log("Actions: "+this.actions);
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

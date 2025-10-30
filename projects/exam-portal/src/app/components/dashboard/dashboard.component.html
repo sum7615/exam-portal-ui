@@ -1,41 +1,46 @@
 <div class="flex flex-col absolute inset-0">
-    <!-- Toolbar -->
-    <mat-toolbar class="flex justify-between items-center shadow-sm bg-white px-4">
-      <div class="flex items-center">
-        <button mat-icon-button (click)="snav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <div class="ml-4">
-          <!-- Replace with your logo path -->
-          <img class="w-40" [src]="HeaderLogo" alt="SPXAM">
-        </div>
+  <!-- Toolbar -->
+  <mat-toolbar class="flex justify-between items-center shadow-sm bg-white px-4">
+    <div class="flex items-center">
+      <button mat-icon-button (click)="snav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="ml-4">
+        <img class="w-40" [src]="HeaderLogo" alt="SPXAM" />
       </div>
-      <div class="flex">
-        <!-- Profile Button -->
-        <button class="mx-2 p-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors" (click)="loadProfile()">
-          <i class="bi bi-person-lines-fill"></i>
-        </button>
-        <!-- Logout Button -->
-        <button class="mx-2 p-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors" (click)="logout()">
-          <i class="bi bi-box-arrow-right"></i>
-        </button>
-      </div>
-    </mat-toolbar>
+    </div>
+
+    <div class="flex">
+      <button
+        class="mx-2 p-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
+        (click)="loadProfile()"
+      >
+        <i class="bi bi-person-lines-fill"></i>
+      </button>
+      <button
+        class="mx-2 p-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
+        (click)="logout()"
+      >
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- Sidenav Container -->
+  <mat-sidenav-container class="flex-1">
+    <mat-sidenav
+    #snav
+    [mode]="mobileQuery.matches ? 'over' : 'side'"
+    class="w-60 bg-white shadow-md flex flex-col"
+  >
+    <app-dashboard-sidenav [actions]="actions" [roles]="roles"></app-dashboard-sidenav>
+  </mat-sidenav>
   
-    <!-- Sidenav Container -->
-    <mat-sidenav-container class="flex-1" >
-      <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" class="w-60 bg-white shadow-md">
-        <mat-toolbar-row>
-          <ul class="mt-8">
-            <li class="p-2 m-2 cursor-pointer rounded hover:bg-gray-100 transition-colors" [routerLink]="['my']">
-              My Dashboard
-            </li>
-          </ul>
-        </mat-toolbar-row>
-      </mat-sidenav>
-      <mat-sidenav-content>
-        <router-outlet></router-outlet>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-    <app-footer></app-footer>
-  </div>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <app-footer></app-footer>
+</div>
