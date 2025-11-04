@@ -40,13 +40,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AttempHeaderComponent } from './components/attempt/attemp-header/attemp-header.component';
 import { AttemptComponent } from './components/attempt/attempt.component';
 import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
-import { AddTestComponent } from './components/add-test/add-test.component';
-import { QuestionComponent } from './components/question/question.component';
-import { QuestionBankComponent } from './components/question-bank/question-bank.component';
-import { ViewTestComponent } from './components/view-test/view-test.component';
-import { ViewQuestionComponent } from './components/view-question/view-question.component';
-import { ViewQuestionBankComponent } from './components/view-question-bank/view-question-bank.component';
 import { DashboardSidenavComponent } from './components/dasboard-component/dashboard-sidenav/dashboard-sidenav.component';
+import { TestManagementComponent } from './components/test-management/test-management.component';
+import { QuestionBankManagementComponent } from './components/question-bank-management/question-bank-management.component';
+import { QuestionManagementComponent } from './components/question-management/question-management.component';
+import { DurationPipe } from './util/duration.pipe';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
+import { AgGridAngular } from 'ag-grid-angular';
+ModuleRegistry.registerModules([ AllCommunityModule ]);
+
 @NgModule({
     declarations: [
         RegisterComponent,
@@ -66,13 +68,11 @@ import { DashboardSidenavComponent } from './components/dasboard-component/dashb
         TestsComponent,
         AttempHeaderComponent,
         AttemptComponent,
-        AddTestComponent,
-        QuestionComponent,
-        QuestionBankComponent,
-        ViewTestComponent,
-        ViewQuestionComponent,
-        ViewQuestionBankComponent,
-        DashboardSidenavComponent
+        DashboardSidenavComponent,
+        TestManagementComponent,
+        QuestionBankManagementComponent,
+        QuestionManagementComponent
+        
    ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         CommonModule,
@@ -95,6 +95,9 @@ import { DashboardSidenavComponent } from './components/dasboard-component/dashb
         MatRadioModule,
         LayoutModule,
         FormsModule,
+        DurationPipe,
+        AgGridAngular,
         MatSidenavModule], providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, provideHttpClient(withInterceptorsFromDi())]
 })
+
 export class AppModule { }

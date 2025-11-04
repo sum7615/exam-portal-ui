@@ -31,4 +31,24 @@ export class Constant{
     public static ATTEMPT_MCQ_API = "test/attempt/mcq";
     public static GET_QUESTION_API = "test/get/qns";
     public static FINISH_TEST_API="test/finish/test";
+
+
+    // Management API
+
+    public static FETCH_QUESTION_BANK= "test/question/bank/fetch?userName=";
+    public static ADD_QUESTION_BANK = "test/question/bank/create";
+    public static UPDATE_QUESTION_BANK="test/question/bank/update";
+    public static DELETE_QUESTION_BANK = "test/question/bank/delete";
+
+
+    public static FETCH_QUESTIONS="test/question/fetch?userName=";
+    public static ADD_QUESTION = "test/question/create";
+    public static UPDATE_QUESTION = "test/question/update";
+    public static DELETE_QUESTION = "test/question/delete";
+
+
+
+    public static FETCH_TEST="test/get-test/";
+    public static ADD_TEST="test/create-test";
+
 }

@@ -1,0 +1,145 @@
+<div class="flex flex-col md:flex-row gap-6 bg-gray-50 p-6 rounded-2xl shadow-sm">
+  <!-- Question Banks Card -->
+  <mat-card class="flex-1 shadow-md rounded-2xl p-6">
+    <div class="flex flex-col items-center text-center">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
+        Available Question Banks
+      </h2>
+
+      <mat-form-field class="w-full md:w-3/4 mb-4">
+        <mat-label>Select a Question Bank</mat-label>
+        <mat-select (selectionChange)="changeQuestionBank($event.value)" [(value)]="selectedQuestionBank">
+          <mat-option *ngFor="let bank of allQuestionbank" [value]="bank.id">
+            {{ bank.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <a routerLink="/dashboard/my/manage/bank"
+        class="inline-block bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition">
+        Manage Question Bank
+      </a>
+    </div>
+  </mat-card>
+
+  <!-- Questions Card -->
+  <mat-card class="flex-1 p-6 shadow-md rounded-2xl">
+    <div>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
+        Questions
+      </h2>
+      <ag-grid-angular style="width: 100%; height: 16rem;" [rowData]="data" [columnDefs]="columnDefs"
+        [pagination]="pagination" [paginationPageSize]="paginationPageSize"
+        [paginationPageSizeSelector]="paginationPageSizeSelector" [overlayLoadingTemplate]="overlayLoadingTemplate"
+        [overlayNoRowsTemplate]="selectedQuestionBank ? overlayNoDataTemplate : overlayInitialTemplate"
+        (gridReady)="onGridReady($event)" />
+    </div>
+  </mat-card>
+</div>
+
+
+<!-- Add / Update Question Card -->
+<div class="bg-gray-50 p-6 rounded-2xl shadow-sm mt-6">
+  <mat-card class="flex-1 shadow-md rounded-2xl p-6">
+    <div class="flex flex-col md:flex-row items-center justify-between mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4 md:mb-0 text-center md:text-left">
+        {{ selectedQuestion ? '✏️ Update Question' : '➕ Add Question' }}
+      </h2>
+
+      <mat-form-field class="w-full md:w-1/2">
+        <mat-label>Select a Question Bank</mat-label>
+        <mat-select required (selectionChange)="changeQuestionBank($event.value)" [(value)]="selectedQuestionBank">
+          <mat-option *ngFor="let bank of allQuestionbank" [value]="bank.id">
+            {{ bank.name }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Choose where to add or update the question</mat-hint>
+      </mat-form-field>
+
+    </div>
+
+    <form [formGroup]="questionForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <mat-form-field class="w-full">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Problem Statement</mat-label>
+        <textarea matInput rows="3" formControlName="problemStatement"></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Problem Image (optional URL)</mat-label>
+        <input matInput formControlName="problemStatementImg" />
+      </mat-form-field>
+
+      <div class="grid grid-cols-2 gap-4">
+        <mat-form-field>
+          <mat-label>Option 1</mat-label>
+          <input matInput formControlName="o1" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Option 2</mat-label>
+          <input matInput formControlName="o2" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Option 3</mat-label>
+          <input matInput formControlName="o3" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Option 4</mat-label>
+          <input matInput formControlName="o4" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Option 5 (optional)</mat-label>
+          <input matInput formControlName="o5" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="type">
+            <mat-option value="MCQ">MCQ</mat-option>
+            <mat-option value="Subjective">Subjective</mat-option>
+            <mat-option value="True/False">True/False</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="w-full">
+        <mat-label>Correct Answer</mat-label>
+        <input matInput formControlName="ans" />
+      </mat-form-field>
+
+      <div class="grid grid-cols-2 gap-4">
+        <mat-form-field>
+          <mat-label>Mark</mat-label>
+          <input matInput type="number" formControlName="mark" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Level</mat-label>
+          <mat-select formControlName="level">
+            <mat-option value="Easy">Easy</mat-option>
+            <mat-option value="Medium">Medium</mat-option>
+            <mat-option value="Hard">Hard</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+      </div>
+
+      <div class="flex justify-center gap-4 mt-4">
+        <button mat-raised-button color="warn" type="button" *ngIf="selectedQuestion"
+        (click)="deleteQuestion(selectedQuestion.id)">
+          Delete this question
+        </button>
+        <button mat-raised-button color="primary" type="submit">
+          {{ selectedQuestion ? 'Update Question' : 'Add Question' }}
+        </button>
+        <button mat-stroked-button color="warn" type="button" (click)="resetForm()">
+          Reset
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

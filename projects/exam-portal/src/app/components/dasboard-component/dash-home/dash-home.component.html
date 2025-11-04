@@ -18,6 +18,9 @@
                     <button mat-flat-button color="accent" (click)="viewTest(data.upcoming[0].id)">View Test</button>
                     <button mat-stroked-button>Postpone</button>
                 </div>
+                <div class="flex justify-center gap-4 mt-4" *ngIf="!data.upcoming.length">
+                  <p class="text-gray-500 text-sm mt-2">No upcoming test</p>
+                </div>
             </mat-card>
 
             <!-- Performance -->
@@ -45,10 +48,21 @@
             <mat-card class="col-span-1 p-6 rounded-2xl shadow-md">
                 <h2 class="font-semibold text-lg mb-4">Recent Solved Papers</h2>
                 <div class="flex items-center gap-4"*ngIf="data.past.length">
-                    <mat-progress-spinner mode="determinate" [value]="data.past[0].obtainedMark/data.past[0].totalMark*100" diameter="60" color="accent"> jjhh</mat-progress-spinner>
+                    <mat-progress-spinner mode="determinate" [value]="data.past[0].obtainedMark/data.past[0].totalMark*100" diameter="60" color="accent"></mat-progress-spinner>
                     <div>
                         <p class="font-semibold">{{ data.past[0].title }}</p>
-                        <p class="text-xs text-gray-400">{{ data.past[0].attemptStartTime }} - {{ data.past[0].attemptedDuration/60}} minutes</p>
+                        <div class="flex flex-row">
+                          <div class="text-xs text-gray-600">Attempted at:</div>
+                          <p class="text-xs text-gray-400">{{ data.past[0].attemptStartTime|date:'medium' }} </p>
+                        </div>
+                        <div class="flex flex-row">
+                          <div class="text-xs text-gray-600">Finished at:</div>
+                          <p class="text-xs text-gray-400">{{ data.past[0].attemptEndTime|date:'medium' }} </p>
+                        </div>
+                        <div class="flex flex-row">
+                          <div class="text-xs text-gray-600">Time taken:</div>
+                          <p class="text-xs text-gray-400"> {{data.past[0].attemptedDuration | duration}}</p>
+                        </div>
                         <button mat-stroked-button color="accent" class="mt-2">Take A Look</button>
                     </div>
                 </div>
@@ -80,7 +94,7 @@
               </mat-card>
               
 
-            <!-- Calendar -->
+            <!-- Calendar
             <mat-card class="p-4 rounded-xl shadow-md w-64">
                 <div class="flex items-center justify-between mb-3">
                   <button mat-icon-button (click)="prevDate()" [disabled]="selectedIndex === 0">
@@ -115,7 +129,7 @@
               
                 <button mat-flat-button color="accent" class="mt-4 w-full">Monthly View</button>
               </mat-card>
-              
+               -->
         </div>
     </div>
 </div>

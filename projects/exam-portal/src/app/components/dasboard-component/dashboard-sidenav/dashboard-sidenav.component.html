@@ -1,136 +1,53 @@
-    <!-- Sidebar Navigation -->
-    <ul class="space-y-2 flex-1 overflow-y-auto">
-  
-        <!-- Dashboard -->
-        <li
-          class="p-2 mx-2 cursor-pointer rounded hover:bg-gray-100 transition-colors"
-          *ngIf="actions.includes('ACCESS_DASHBOARD') || roles.includes('Super_Admin')"
-          [routerLink]="['my']"
-        >
-          My Dashboard
-        </li>
-    
-        <!-- Question Bank Management -->
-        <li
-          class="cursor-pointer rounded hover:bg-gray-100 transition-colors group"
-          *ngIf="actions.includes('QUESTION_BANK_MANAGEMENT') || roles.includes('Super_Admin')"
-        >
-          <button class="flex items-center w-full px-3 py-2 rounded hover:bg-gray-100">
-            <span>Question Bank Managements</span>
-            <svg
-              class="ml-auto w-4 h-4 transform group-hover:rotate-90 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-    
-          <!-- Submenu below -->
-          <div class="hidden group-hover:block pl-6 transition-all duration-300">
-            <div
-              class="px-4 py-2 hover:bg-gray-200 rounded"
-              *ngIf="actions.includes('ADD_QUESTION_BANK') || roles.includes('Super_Admin')"
-              [routerLink]="['question/bank/add']"
-            >
-              Add Question Bank
-            </div>
-            <div
-              class="px-4 py-2 hover:bg-gray-200 rounded"
-              *ngIf="actions.includes('VIEW_QUESTION_BANK') || roles.includes('Super_Admin')"
-              [routerLink]="['question/bank/view']"
-            >
-              View Question Bank
-            </div>
-          </div>
-        </li>
-    
-        <!-- Question Management -->
-        <li
-          class="cursor-pointer rounded hover:bg-gray-100 transition-colors group"
-          *ngIf="actions.includes('QUESTION_MANAGEMENT') || roles.includes('Super_Admin')"
-        >
-          <button class="flex items-center w-full px-3 py-2 rounded hover:bg-gray-100">
-            <span>Question Managements</span>
-            <svg
-              class="ml-auto w-4 h-4 transform group-hover:rotate-90 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-    
-          <!-- Submenu below -->
-          <div class="hidden group-hover:block pl-6 transition-all duration-300">
-            <div
-              class="px-4 py-2 hover:bg-gray-200 rounded"
-              *ngIf="actions.includes('ADD_QUESTION') || roles.includes('Super_Admin')"
-              [routerLink]="['question/add']"
-            >
-              Add Question
-            </div>
-            <div
-              class="px-4 py-2 hover:bg-gray-200 rounded"
-              *ngIf="actions.includes('VIEW_QUESTION') || roles.includes('Super_Admin')"
-              [routerLink]="['question/view']"
-            >
-              View Question
-            </div>
-          </div>
-        </li>
-    
-        <!-- Test Management -->
-        <li
-          class="cursor-pointer rounded hover:bg-gray-100 transition-colors group"
-          *ngIf="actions.includes('TEST_MANAGEMENT') || roles.includes('Super_Admin')"
-        >
-          <button class="flex items-center w-full px-3 py-2 rounded hover:bg-gray-100">
-            <span>Test Managements</span>
-            <svg
-              class="ml-auto w-4 h-4 transform group-hover:rotate-90 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-    
-          <!-- Submenu below -->
-          <div class="hidden group-hover:block pl-6 transition-all duration-300">
-            <div
-              class="px-4 py-2 hover:bg-gray-200 rounded"
-              *ngIf="actions.includes('CREATE_TEST') || roles.includes('Super_Admin')"
-              [routerLink]="['test/add']"
-            >
-              Add Test
-            </div>
-            <div
-              class="px-4 py-2 hover:bg-gray-200 rounded"
-              *ngIf="actions.includes('DELETE_TEST') || roles.includes('Super_Admin')"
-              [routerLink]="['test/view']"
-            >
-              View Test
-            </div>
-          </div>
-        </li>
-    
-      </ul>
+<!-- Sidebar Navigation -->
+<ul class="space-y-2 flex-1 overflow-y-auto">
+
+  <!-- Dashboard -->
+  <li class="p-2 mx-2 cursor-pointer rounded hover:bg-gray-100 transition-colors"
+    *ngIf="actions.includes('ACCESS_DASHBOARD') || roles.includes('Super_Admin')" [routerLink]="['my']">
+    Dashboard
+  </li>
+
+  <!-- Question Bank Management -->
+  <li class="cursor-pointer rounded hover:bg-gray-100 transition-colors group"
+    *ngIf="actions.includes('QUESTION_BANK_MANAGEMENT') || roles.includes('Super_Admin')">
+    <button class="flex items-center w-full px-3 py-2 rounded hover:bg-gray-100"
+    [routerLink]="['my/manage/bank']"
+    >
+      <span>Question Bank Managements</span>
+      <svg class="ml-auto w-4 h-4 transform group-hover:rotate-90 transition-transform" fill="none"
+        stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </li>
+
+  <!-- Question Management -->
+  <li class="cursor-pointer rounded hover:bg-gray-100 transition-colors group"
+    *ngIf="actions.includes('QUESTION_MANAGEMENT') || roles.includes('Super_Admin')">
+    <button class="flex items-center w-full px-3 py-2 rounded hover:bg-gray-100"
+    [routerLink]="['my/manage/question']"
+    >
+      <span>Question Managements</span>
+      <svg class="ml-auto w-4 h-4 transform group-hover:rotate-90 transition-transform" fill="none"
+        stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+  </li>
+
+  <!-- Test Management -->
+  <li class="cursor-pointer rounded hover:bg-gray-100 transition-colors group"
+    *ngIf="actions.includes('TEST_MANAGEMENT') || roles.includes('Super_Admin')">
+    <button class="flex items-center w-full px-3 py-2 rounded hover:bg-gray-100"
+    [routerLink]="['my/manage/test']"
+    >
+      <span>Test Managements</span>
+      <svg class="ml-auto w-4 h-4 transform group-hover:rotate-90 transition-transform" fill="none"
+        stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </li>
+
+</ul>

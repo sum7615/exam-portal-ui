@@ -14,12 +14,9 @@ import { DashHomeComponent } from "./components/dasboard-component/dash-home/das
 import { TestsComponent } from "./components/dasboard-component/tests/tests.component";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { AttemptComponent } from "./components/attempt/attempt.component";
-import { AddTestComponent } from "./components/add-test/add-test.component";
-import { QuestionComponent } from "./components/question/question.component";
-import { QuestionBankComponent } from "./components/question-bank/question-bank.component";
-import { ViewQuestionBankComponent } from "./components/view-question-bank/view-question-bank.component";
-import { ViewQuestionComponent } from "./components/view-question/view-question.component";
-import { ViewTestComponent } from "./components/view-test/view-test.component";
+import { TestManagementComponent } from "./components/test-management/test-management.component";
+import { QuestionBankManagementComponent } from "./components/question-bank-management/question-bank-management.component";
+import { QuestionManagementComponent } from "./components/question-management/question-management.component";
 const routes:Routes =[
     {path:"register",component:RegisterComponent},
     {path:"login",component:LoginComponent},
@@ -35,15 +32,10 @@ const routes:Routes =[
         {path:"my",component:DashHomeComponent},
         {path:"my/test/:id",component:TestsComponent},
         {path:"my/profile",component:ProfileComponent},
+        {path:"my/manage/test",component:TestManagementComponent},
+        {path:"my/manage/question",component:QuestionManagementComponent},
+        {path:"my/manage/bank",component:QuestionBankManagementComponent},
         
-        {path:"test/add",component:AddTestComponent},
-        {path:"test/view",component:ViewTestComponent},
-    
-        {path:"question/add",component:QuestionComponent},
-        {path:"question/view",component:ViewQuestionComponent},
-    
-        {path:"question/bank/add",component:QuestionBankComponent},
-        {path:"question/bank/view",component:ViewQuestionBankComponent}
       ]
     },
     {path:"forget",component:ForgetComponent},

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DashboardService } from '../../../service/dashboard.service';
 import { DashBoadRes, PastTest } from '../../../contracts/DashBoardRes';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dash-home',
@@ -16,6 +15,7 @@ export class DashHomeComponent implements OnInit {
   data!: DashBoadRes;
   usr: string | null = null;
   isLoading: boolean = true;
+  Math = Math;
 
   alltest:any[]=[];
 
