@@ -1,1 +1,123 @@
-<p>test-management works!</p>
+<div class="flex flex-row shadow-md  gap-2 p-4">
+    <mat-card class="flex-1 flex-[0.4] p-2 shadow-md rounded-2xl">
+        <div>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
+                Question Banks
+            </h2>
+            <ag-grid-angular style="width: 100%; height: 16rem;" [rowData]="allQuestionbank"
+                [columnDefs]="questionBankColumnDefs" [pagination]="pagination"
+                [paginationPageSize]="paginationPageSize" [paginationPageSizeSelector]="paginationPageSizeSelector"
+                [overlayLoadingTemplate]="overlayLoadingTemplate"
+                [overlayNoRowsTemplate]="selectedTest ? overlayNoDataTemplate:overlayLoadingTemplate"
+                (gridReady)="onGridReady($event)" />
+        </div>
+        <div class="flex justify-center mt-2 gap-4">
+            <a routerLink="/dashboard/my/manage/bank"
+                class="inline-block bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition">
+                Manage Question Bank
+            </a>
+            <a routerLink="/dashboard/my/manage/question"
+                class="inline-block bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition">
+                Manage Question
+            </a>
+        </div>
+    </mat-card>
+
+
+    <mat-card class="flex-1 p-6 flex-[0.6] shadow-md rounded-2xl">
+        <div>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
+                Test
+            </h2>
+            <ag-grid-angular style="width: 100%; height: 16rem;" [rowData]="data" [columnDefs]="columnDefs"
+                [pagination]="pagination" [paginationPageSize]="paginationPageSize"
+                [paginationPageSizeSelector]="paginationPageSizeSelector"
+                [overlayLoadingTemplate]="overlayLoadingTemplate"
+                [overlayNoRowsTemplate]="selectedTest ? overlayNoDataTemplate:overlayLoadingTemplate"
+                (gridReady)="onGridReady($event)" />
+        </div>
+    </mat-card>
+</div>
+
+
+<!-- Test Form (Add / Edit) -->
+<div class="mt-8 p-6 bg-white shadow-md rounded-2xl max-w-4xl mx-auto">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">
+        {{ isEditMode ? 'Edit Test' : 'Add New Test' }}
+    </h2>
+
+    <form [formGroup]="testForm" (ngSubmit)="onSubmit()" class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="block text-gray-700 mb-1">Test Name</label>
+            <input formControlName="name" type="text" class="w-full border rounded-lg p-2" />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">Description</label>
+            <input formControlName="description" type="text" class="w-full border rounded-lg p-2" />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">Start Time</label>
+            <input formControlName="startTime" type="datetime-local" class="w-full border rounded-lg p-2" />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">End Time</label>
+            <input formControlName="endTime" type="datetime-local" class="w-full border rounded-lg p-2" />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">Duration (min)</label>
+            <input formControlName="duration" type="number" class="w-full border rounded-lg p-2" />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">Total Marks</label>
+            <input formControlName="totalMarks" type="number" class="w-full border rounded-lg p-2" />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">Total Questions</label>
+            <input formControlName="totalQuestions" type="number" class="w-full border rounded-lg p-2" />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">Pass Mark</label>
+            <input formControlName="passMark" type="number" class="w-full border rounded-lg p-2" />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">Test Level</label>
+            <select formControlName="testLevel" class="w-full border rounded-lg p-2">
+                <option value="">Select Level</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-gray-700 mb-1">Question Bank</label>
+            <select formControlName="questionBankId" class="w-full border rounded-lg p-2">
+                <option value="">Select Question Bank</option>
+                <option *ngFor="let qb of allQuestionbank" [value]="qb.id">{{ qb.name }}</option>
+            </select>
+        </div>
+
+        <div class="col-span-2 flex justify-center mt-4 gap-4">
+            <button *ngIf="isEditMode && selectedTest" type="button" (click)="deleteTest(selectedTest.id)" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
+                Delete Test
+            </button>
+
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
+                {{ isEditMode ? 'Update Test' : 'Add Test' }}
+            </button>
+
+            <button type="button" (click)="resetForm()"
+                class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded-lg transition">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>

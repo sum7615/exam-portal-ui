@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewTestRes } from '../../../contracts/ViewTestRes';
 import { DashboardService } from '../../../service/dashboard.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../service/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Constant } from '../../../util/constant';
@@ -18,9 +18,10 @@ export class TestsComponent implements OnInit {
   data!:ViewTestRes;
 
   constructor(private dashService:DashboardService,private attempt:AttemptService,
-    private router:Router,private auth:AuthService,private http:HttpClient) { }
+    private router:Router,private auth:AuthService,private http:HttpClient,private route:ActivatedRoute) { }
 
   usr: string | null = null;
+  testId!:string|null;
   ngOnInit(): void {
 
     if(!this.auth.getAccessToken()){
@@ -29,9 +30,10 @@ export class TestsComponent implements OnInit {
     }
 
     this.usr = this.auth.getUsername();
+    this.testId = this.route.snapshot.paramMap.get('id');
 
-    if(this.usr){
-      this.dashService.viewTestData(this.usr,8).subscribe({
+    if(this.usr && this.testId){
+      this.dashService.viewTestData(this.usr,this.testId).subscribe({
         next:(res:ViewTestRes)=>{
           this.data=res;
         },error: (err) =>console.error(err)

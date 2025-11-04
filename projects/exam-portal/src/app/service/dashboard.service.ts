@@ -11,7 +11,7 @@ export class DashboardService{
     public loadDashboardData(userName:string):Observable<DashBoadRes>{
         return this.http.get<DashBoadRes>(Constant.FETCH_DASHBOARD_DATA.concat(userName));
     }
-    public viewTestData(userName: string, testId: number): Observable<ViewTestRes> {
+    public viewTestData(userName: string, testId: string): Observable<ViewTestRes> {
         const payload = { userName, testId };
         return this.http.post<ViewTestRes>(Constant.FETCH_TEST_DATA, payload);
       }

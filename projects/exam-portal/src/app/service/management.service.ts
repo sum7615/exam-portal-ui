@@ -11,6 +11,10 @@ import { FetchQuestion } from "../contracts/FetchQuestion";
 import { UpdateQuestionPayload } from "../contracts/UpdateQuestionPayload";
 import { DeleteQuestionPayload } from "../contracts/DeleteQuestionPayload";
 import { AddQuestionPayload } from "../contracts/AddQuestionPayload";
+import { FetchTestAdmin } from "../contracts/FetchTestAdmin";
+import { CreateTestPayload } from "../contracts/CreateTestPayload";
+import { UpdateTestPayload } from "../contracts/UpdateTestPayload";
+import { DeleteTestPayload } from "../contracts/DeleteTestPayload";
 @Injectable({
     providedIn: 'root'
 })
@@ -51,5 +55,25 @@ export class ManagementService {
     deleteQuestion(payload:DeleteQuestionPayload){
         return this.http.post(Constant.DELETE_QUESTION,payload);
     }
+
+
+    // test
+
+    fetchTest(user:string):Observable<FetchTestAdmin[]>{
+        return this.http.get<FetchTestAdmin[]>(Constant.FETCH_TEST.concat(user));
+    }
+
+    createTest(payload:CreateTestPayload):Observable<number>{
+        return this.http.post<number>(Constant.ADD_TEST,payload);
+    }
+
+    updateTest(payload:UpdateTestPayload){
+        return this.http.put(Constant.UPDATE_TEST,payload);
+    }
+
+    deleteTest(payload:DeleteTestPayload){
+        return this.http.post(Constant.DELETE_TEST,payload);
+    }
+
 
 }

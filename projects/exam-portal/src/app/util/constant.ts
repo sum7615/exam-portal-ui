@@ -48,7 +48,9 @@ export class Constant{
 
 
 
-    public static FETCH_TEST="test/get-test/";
-    public static ADD_TEST="test/create-test";
+    public static FETCH_TEST="test/test/admin/";
+    public static ADD_TEST="test/test/create";
+    public static UPDATE_TEST="test/test/update";
+    public static DELETE_TEST ="test/test/delete";
 
 }
