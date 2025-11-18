@@ -10,6 +10,9 @@ export interface FetchTestAdmin{
     totalMarks:number,
     totalQuestions:number,
     passMark:number,
-    testLevel:string
-    
+    testLevel:string,
+    isEditAble:boolean,
+    isDeleteAble:boolean,
+    isAssignAble:boolean,
+    isActive:boolean    
 }

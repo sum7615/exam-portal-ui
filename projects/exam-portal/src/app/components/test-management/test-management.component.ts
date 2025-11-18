@@ -120,6 +120,8 @@ export class TestManagementComponent {
       passMark: [0, [Validators.required, Validators.min(1)]],
       testLevel: ['', Validators.required],
       questionBankId: ['', Validators.required],
+      isActive: ['', Validators.required],
+
     });
   }
   onEdit(test: FetchTestAdmin) {

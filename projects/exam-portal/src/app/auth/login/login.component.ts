@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    if(this.auth.getAccessToken()){
+    if(this.auth.hasAccessToken()){
       this.router.navigate(["dashboard/my"])
     }
     this.LoginLoad();
